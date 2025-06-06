@@ -33,6 +33,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         {
             GameManager.instance.OnTileClicked(this);
         }
+        Debug.Log(x + "," + y);
     }
 
     public void SetOccupied(bool occupied)

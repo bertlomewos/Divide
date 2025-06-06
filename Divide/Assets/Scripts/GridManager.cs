@@ -1,3 +1,4 @@
+// ---- GridManager.cs ----
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -6,25 +7,19 @@ using UnityEngine.InputSystem;
 
 public class GridManager : MonoBehaviour
 {
-    [Header("Grid Settings")]
-    [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private Transform _cam;
-
-    [Header("Game Elements")]
     [SerializeField] private Nutrient _nutrientPrefab;
+    [SerializeField] private Transform _cam;
+    public int NutrientCount { get; private set; }
+    public int width { get; private set; }
+    public int height { get; private set; }
+    public int StartX { get; private set; }
+    public int StartY { get; private set; }
+    public int petriDishCap { get; private set; }
 
-    [Header("Level Design")]
-    [SerializeField] private LevelData currentLevelData;
-
-    public int NutrientCount => currentLevelData.nutrientCoordinates.Count;
-
-    private Dictionary<Vector2, Tile> _tiles;
+    private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
+    private LevelData currentLevelData;
     public static GridManager instance;
-
-    public int StartX, StartY;
-    public int petriDishCap;
-
 
     private void Awake()
     {
@@ -37,28 +32,39 @@ public class GridManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        _width = currentLevelData.width;
-        _height = currentLevelData.height;
+    }
+
+   
+    public void BuildLevel(LevelData levelData)
+    {
+        this.currentLevelData = levelData;
+        ClearGrid(); 
+
+      
+        width = currentLevelData.width;
+        height = currentLevelData.height;
         StartX = currentLevelData.SpawnX;
         StartY = currentLevelData.SpawnY;
         petriDishCap = currentLevelData.Capacity;
+        NutrientCount = currentLevelData.nutrientCoordinates.Count;
+
         GenerateGrid();
     }
 
-    private void Update()
+    private void ClearGrid()
     {
-        if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+        foreach (var tile in _tiles.Values)
         {
-            RestartScene(0);
+            if (tile != null) Destroy(tile.gameObject);
         }
+        _tiles.Clear();
     }
 
-    public void GenerateGrid()
+    private void GenerateGrid()
     {
-        _tiles = new Dictionary<Vector2, Tile>();
-        for (int x = 0; x < _width; x++)
+        for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < _height; y++)
+            for (int y = 0; y < height; y++)
             {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity, transform);
                 spawnedTile.name = $"Tile {x} {y}";
@@ -71,23 +77,17 @@ public class GridManager : MonoBehaviour
                 _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
-
         if (_cam != null)
         {
-            _cam.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10f);
+            _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10f);
         }
 
-        LoadLevel();
+        LoadLevelLayout();
     }
 
-    private void LoadLevel()
+    private void LoadLevelLayout()
     {
-        if (currentLevelData == null)
-        {
-            Debug.LogError("No LevelData assigned to GridManager!");
-            return;
-        }
-
+        
         foreach (var region in currentLevelData.wallRegions)
         {
             for (int x = region.startCoordinate.x; x <= region.endCoordinate.x; x++)
@@ -120,12 +120,6 @@ public class GridManager : MonoBehaviour
         {
             return tile;
         }
-
         return null;
-    }
-
-    public void RestartScene(int index)
-    {
-        SceneManager.LoadScene(index);
     }
 }
