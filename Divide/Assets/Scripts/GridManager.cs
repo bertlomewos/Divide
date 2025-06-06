@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GridManager : MonoBehaviour
 {
@@ -41,6 +43,14 @@ public class GridManager : MonoBehaviour
         StartY = currentLevelData.SpawnY;
         petriDishCap = currentLevelData.Capacity;
         GenerateGrid();
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            RestartScene(0);
+        }
     }
 
     public void GenerateGrid()
@@ -112,5 +122,10 @@ public class GridManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void RestartScene(int index)
+    {
+        SceneManager.LoadScene(index);
     }
 }
