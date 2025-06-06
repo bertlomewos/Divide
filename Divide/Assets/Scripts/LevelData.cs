@@ -8,7 +8,7 @@ public class WallRegion
     public Vector2Int endCoordinate;
 }
 
-[CreateAssetMenu(fileName = "New Level Data", menuName = "BacteriaGame/Level Data")]
+[CreateAssetMenu(fileName = "New Level Data", menuName = "Levels/Level Data")]
 public class LevelData : ScriptableObject
 {
     public int width, height;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class GameManager : MonoBehaviour
     private int _currentBacteriaCount = 0;
     private List<Bacteria> _bacteriaColony = new List<Bacteria>();
     private int _nutrientsCollected = 0;
+
+    /*[UI]*/
+    public GameObject _youLose;
 
     private void Awake()
     {
@@ -49,6 +53,7 @@ public class GameManager : MonoBehaviour
         if (_currentBacteriaCount >= _petriDishCapacity)
         {
             Debug.Log("Petri dish is full! Game Over!");
+            _youLose.gameObject.SetActive(true);
             return;
         }
 
