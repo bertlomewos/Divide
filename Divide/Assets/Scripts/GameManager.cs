@@ -6,10 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [Header("Game Configuration")]
     [SerializeField] private Bacteria _bacteriaPrefab;
-    [SerializeField] private int _petriDishCapacity = 20;
-    [SerializeField] private int _totalNutrients; // Will be set by GridManager
+    [SerializeField] private int _petriDishCapacity = 25;
 
+    private int _totalNutrients;
     private int _currentBacteriaCount = 0;
     private List<Bacteria> _bacteriaColony = new List<Bacteria>();
     private int _nutrientsCollected = 0;
@@ -28,14 +29,16 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // Get total nutrients from GridManager after it has spawned them
-        _totalNutrients = FindObjectOfType<GridManager>()._nutrientCount;
+        _totalNutrients = GridManager.instance.NutrientCount;
 
-        // Start the game by spawning the first bacteria
-        Tile startTile = GridManager.instance.GetTileAtPosition(new Vector2(5, 5)); // Example start
-        if (startTile != null)
+        Tile startTile = GridManager.instance.GetTileAtPosition(new Vector2(5, 5));
+        if (startTile != null && startTile.isWalkable)
         {
             SpawnBacteria(startTile);
+        }
+        else
+        {
+            Debug.LogError("Start tile (5,5) is blocked or does not exist! Check your LevelData.");
         }
     }
 
@@ -44,7 +47,6 @@ public class GameManager : MonoBehaviour
         if (_currentBacteriaCount >= _petriDishCapacity)
         {
             Debug.Log("Petri dish is full! Game Over!");
-            // Add proper game over UI/logic here
             return;
         }
 
@@ -54,22 +56,19 @@ public class GameManager : MonoBehaviour
         _bacteriaColony.Add(newBacteria);
         _currentBacteriaCount++;
 
-        // Check if the tile has a nutrient to "eat"
         CheckForNutrient(tile);
 
         Debug.Log($"Bacteria count: {_currentBacteriaCount}/{_petriDishCapacity}");
     }
 
-    // Renamed from OnTileClicked for clarity
     public void OnTileClicked(Tile clickedTile)
     {
-        // Check if any existing bacteria is adjacent to the clicked tile
-        foreach (var bacteria in _bacteriaColony.ToList()) // Use ToList() to avoid collection modification issues
+        foreach (var bacteria in _bacteriaColony.ToList())
         {
             if (IsAdjacent(clickedTile, bacteria.currentTile))
             {
                 SpawnBacteria(clickedTile);
-                return; // Exit after spawning one
+                return;
             }
         }
     }
@@ -85,14 +84,12 @@ public class GameManager : MonoBehaviour
             if (_nutrientsCollected >= _totalNutrients)
             {
                 Debug.Log("You collected all the nutrients! YOU WIN!");
-                // Add proper win screen/logic here
             }
         }
     }
 
     private bool IsAdjacent(Tile tile1, Tile tile2)
     {
-        // Manhattan distance of 1 means they are adjacent (not diagonally)
         return (Mathf.Abs(tile1.x - tile2.x) + Mathf.Abs(tile1.y - tile2.y)) == 1;
     }
 }

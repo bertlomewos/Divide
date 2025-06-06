@@ -4,12 +4,13 @@ using UnityEngine.EventSystems;
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public int x, y;
-    [SerializeField] private Color _baseColor, _offsetColor;
+    [SerializeField] private Color _baseColor, _offsetColor, _wallColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
-    private bool isOccupied = false;
-    public Nutrient OccupyingNutrient { get; private set; } // Reference to the nutrient on this tile
+    public bool isWalkable = true;
+    private bool isOccupiedByBacteria = false;
+    public Nutrient OccupyingNutrient { get; private set; }
 
     public void Init(bool isOffset)
     {
@@ -18,7 +19,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _highlight.SetActive(true);
+        if (isWalkable) _highlight.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -28,31 +29,30 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Let the GameManager handle the logic of what happens when a tile is clicked.
-        GameManager.instance.OnTileClicked(this);
+        if (isWalkable)
+        {
+            GameManager.instance.OnTileClicked(this);
+        }
     }
 
     public void SetOccupied(bool occupied)
     {
-        isOccupied = occupied;
-        // Optionally change color if it's occupied by bacteria
+        isOccupiedByBacteria = occupied;
         if (occupied)
         {
             _renderer.color = Color.green;
         }
     }
 
-    // Method to place a nutrient on this tile
     public void SetNutrient(Nutrient nutrient)
     {
-        if (nutrient != null)
+        if (nutrient != null)       
         {
             OccupyingNutrient = nutrient;
             nutrient.transform.position = this.transform.position;
         }
     }
 
-    // Method to remove the nutrient from this tile (when it's "eaten")
     public void ClearNutrient()
     {
         if (OccupyingNutrient != null)
@@ -60,5 +60,11 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             Destroy(OccupyingNutrient.gameObject);
             OccupyingNutrient = null;
         }
+    }
+
+    public void SetAsWall()
+    {
+        isWalkable = false;
+        _renderer.color = _wallColor;
     }
 }

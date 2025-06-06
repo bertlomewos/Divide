@@ -153,7 +153,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 8894702599201678028, guid: ddbdeb7f92b230044b3ee58f269dd17e, type: 3}
   _cam: {fileID: 519420032}
   _nutrientPrefab: {fileID: 6177658715835494662, guid: 46f121db990e5c74f980b0ccf72280d4, type: 3}
-  _nutrientCount: 5
+  currentLevelData: {fileID: 11400000, guid: 6448c7847774c9444b72c19c7fec3b6c, type: 2}
 --- !u!4 &63660043
 Transform:
   m_ObjectHideFlags: 0
@@ -535,7 +535,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
   _petriDishCapacity: 20
-  _totalNutrients: 0
 --- !u!4 &618096053
 Transform:
   m_ObjectHideFlags: 0
@@ -545,7 +544,7 @@ Transform:
   m_GameObject: {fileID: 618096051}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 989.39685, y: 737.4824, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

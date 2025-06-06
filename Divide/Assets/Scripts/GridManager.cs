@@ -4,14 +4,18 @@ using System.Linq;
 
 public class GridManager : MonoBehaviour
 {
+    [Header("Grid Settings")]
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Transform _cam;
-    [SerializeField] private Nutrient _nutrientPrefab;
-    [SerializeField] public int _nutrientCount = 5;
 
-    // Public property to safely expose the private _nutrientCount
-    public int NutrientCount => _nutrientCount;
+    [Header("Game Elements")]
+    [SerializeField] private Nutrient _nutrientPrefab;
+
+    [Header("Level Design")]
+    [SerializeField] private LevelData currentLevelData;
+
+    public int NutrientCount => currentLevelData.nutrientCoordinates.Count;
 
     private Dictionary<Vector2, Tile> _tiles;
     public static GridManager instance;
@@ -30,7 +34,6 @@ public class GridManager : MonoBehaviour
         }
 
         GenerateGrid();
-        SpawnNutrients();
     }
 
     public void GenerateGrid()
@@ -40,7 +43,7 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < _height; y++)
             {
-                var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
+                var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity, transform);
                 spawnedTile.name = $"Tile {x} {y}";
                 spawnedTile.x = x;
                 spawnedTile.y = y;
@@ -56,20 +59,41 @@ public class GridManager : MonoBehaviour
         {
             _cam.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10f);
         }
+
+        LoadLevel();
     }
 
-    public void SpawnNutrients()
+    private void LoadLevel()
     {
-        var emptyTiles = _tiles.Values.OrderBy(t => Random.value).ToList();
-
-        // Ensure we don't try to spawn more nutrients than there are tiles
-        int count = Mathf.Min(_nutrientCount, emptyTiles.Count);
-
-        for (int i = 0; i < count; i++)
+        if (currentLevelData == null)
         {
-            var tile = emptyTiles[i];
-            var nutrient = Instantiate(_nutrientPrefab);
-            tile.SetNutrient(nutrient);
+            Debug.LogError("No LevelData assigned to GridManager!");
+            return;
+        }
+
+        foreach (var region in currentLevelData.wallRegions)
+        {
+            for (int x = region.startCoordinate.x; x <= region.endCoordinate.x; x++)
+            {
+                for (int y = region.startCoordinate.y; y <= region.endCoordinate.y; y++)
+                {
+                    Tile tile = GetTileAtPosition(new Vector2(x, y));
+                    if (tile != null)
+                    {
+                        tile.SetAsWall();
+                    }
+                }
+            }
+        }
+
+        foreach (var nutrientCoord in currentLevelData.nutrientCoordinates)
+        {
+            Tile tile = GetTileAtPosition(nutrientCoord);
+            if (tile != null && tile.isWalkable)
+            {
+                var nutrient = Instantiate(_nutrientPrefab);
+                tile.SetNutrient(nutrient);
+            }
         }
     }
 
