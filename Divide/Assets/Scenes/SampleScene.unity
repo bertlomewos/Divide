@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 63660043}
   - component: {fileID: 63660042}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GridManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,6 +152,8 @@ MonoBehaviour:
   _height: 9
   _tilePrefab: {fileID: 8894702599201678028, guid: ddbdeb7f92b230044b3ee58f269dd17e, type: 3}
   _cam: {fileID: 519420032}
+  _nutrientPrefab: {fileID: 6177658715835494662, guid: 46f121db990e5c74f980b0ccf72280d4, type: 3}
+  _nutrientCount: 5
 --- !u!4 &63660043
 Transform:
   m_ObjectHideFlags: 0
@@ -502,6 +504,53 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
+--- !u!1 &618096051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 618096053}
+  - component: {fileID: 618096052}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &618096052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618096051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae8df2e446e1fed4e9f2b60d463cd72b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
+  _petriDishCapacity: 20
+  _totalNutrients: 0
+--- !u!4 &618096053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618096051}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 989.39685, y: 737.4824, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,6 +777,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 63660043}
   - {fileID: 146103058}
   - {fileID: 214003256}
+  - {fileID: 618096053}
+  - {fileID: 63660043}
