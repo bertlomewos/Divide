@@ -11,6 +11,9 @@ public class WallRegion
 [CreateAssetMenu(fileName = "New Level Data", menuName = "BacteriaGame/Level Data")]
 public class LevelData : ScriptableObject
 {
+    public int width, height;
+    public int SpawnX, SpawnY;
+    public int Capacity;
     [Header("Level Layout")]
     public List<WallRegion> wallRegions;
     public List<Vector2Int> nutrientCoordinates;

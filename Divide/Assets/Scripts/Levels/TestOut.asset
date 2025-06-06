@@ -10,15 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9852827fc5f46f43b4ef7dc0b955862, type: 3}
-  m_Name: Level 1
+  m_Name: TestOut
   m_EditorClassIdentifier: 
-  width: 3
-  height: 3
-  SpawnX: 1
-  SpawnY: 1
-  Capacity: 6
-  wallRegions: []
+  width: 16
+  height: 9
+  SpawnX: 13
+  SpawnY: 8
+  wallRegions:
+  - startCoordinate: {x: 1, y: 0}
+    endCoordinate: {x: 1, y: 7}
+  - startCoordinate: {x: 4, y: 4}
+    endCoordinate: {x: 8, y: 4}
+  - startCoordinate: {x: 2, y: 1}
+    endCoordinate: {x: 10, y: 1}
   nutrientCoordinates:
-  - {x: 2, y: 2}
-  - {x: 0, y: 2}
-  - {x: 2, y: 0}
+  - {x: 0, y: 0}
+  - {x: 5, y: 3}
+  - {x: 8, y: 3}

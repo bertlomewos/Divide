@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9852827fc5f46f43b4ef7dc0b955862, type: 3}
   m_Name: level 2
   m_EditorClassIdentifier: 
-  wallCoordinates:
-  - {x: 0, y: 0}
-  nutrientCoordinates:
-  - {x: 1, y: 1}
+  width: 0
+  height: 0
+  SpawnX: 0
+  SpawnY: 0
+  wallRegions: []
+  nutrientCoordinates: []

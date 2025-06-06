@@ -25,20 +25,22 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+       
     }
+
 
     void Start()
     {
         _totalNutrients = GridManager.instance.NutrientCount;
-
-        Tile startTile = GridManager.instance.GetTileAtPosition(new Vector2(5, 5));
+        _petriDishCapacity = GridManager.instance.petriDishCap;
+        Tile startTile = GridManager.instance.GetTileAtPosition(new Vector2(GridManager.instance.StartX, GridManager.instance.StartY));
         if (startTile != null && startTile.isWalkable)
         {
             SpawnBacteria(startTile);
         }
         else
         {
-            Debug.LogError("Start tile (5,5) is blocked or does not exist! Check your LevelData.");
+            Debug.LogError($"Start tile ({GridManager.instance.StartX},{GridManager.instance.StartY}) is blocked or does not exist! Check your LevelData.");
         }
     }
 

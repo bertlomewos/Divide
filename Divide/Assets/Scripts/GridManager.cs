@@ -20,6 +20,9 @@ public class GridManager : MonoBehaviour
     private Dictionary<Vector2, Tile> _tiles;
     public static GridManager instance;
 
+    public int StartX, StartY;
+    public int petriDishCap;
+
 
     private void Awake()
     {
@@ -32,7 +35,11 @@ public class GridManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
+        _width = currentLevelData.width;
+        _height = currentLevelData.height;
+        StartX = currentLevelData.SpawnX;
+        StartY = currentLevelData.SpawnY;
+        petriDishCap = currentLevelData.Capacity;
         GenerateGrid();
     }
 
