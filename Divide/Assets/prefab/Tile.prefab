@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4735242509554854280}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02846, y: -4.17639, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -79,8 +79,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 5326634882968707425, guid: 9a76306124ef5294687b9c25415041b7, type: 3}
+  m_Color: {r: 0.09019608, g: 0.4392157, b: 0.5568628, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -104,10 +104,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: 0
   y: 0
-  _baseColor: {r: 0.23255605, g: 0.735849, b: 0.37245175, a: 0.8666667}
-  _offsetColor: {r: 0.45977217, g: 0.7924528, b: 0.55743986, a: 0.8509804}
-  _wallColor: {r: 1, g: 0, b: 0, a: 0.9019608}
-  _PortalColor: {r: 0.3820755, g: 0.62849903, b: 1, a: 0.8784314}
+  _baseColor: {fileID: 7983651796150731748, guid: aa36453a849c43f42ba9532e5f0aca74, type: 3}
+  _offsetColor: {fileID: 7983651796150731748, guid: aa36453a849c43f42ba9532e5f0aca74, type: 3}
+  _wallColor: {fileID: 5326634882968707425, guid: 9a76306124ef5294687b9c25415041b7, type: 3}
+  _PortalColor: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   _renderer: {fileID: 2257556721308175723}
   _highlight: {fileID: 6635541321866339634}
   isWalkable: 1
@@ -151,7 +151,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.05, y: 1.06}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

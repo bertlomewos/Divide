@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public int x, y;
-    [SerializeField] private Color _baseColor, _offsetColor, _wallColor, _PortalColor;
+    [SerializeField] private Sprite _baseColor, _offsetColor, _wallColor, _PortalColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
@@ -17,7 +17,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void Init(bool isOffset)
     {
-        _renderer.color = isOffset ? _offsetColor : _baseColor;
+        _renderer.sprite = isOffset ? _offsetColor : _baseColor;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -48,7 +48,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         isOccupiedByBacteria = occupied;
         if (occupied)
         {
-            _renderer.color = Color.green;
+            //_renderer.color = Color.green;
         }
     }
 
@@ -84,7 +84,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (!isWalkable)
         {
             isWalkable = true;
-            _renderer.color = this.isOffset ? _offsetColor : _baseColor;
+            _renderer.sprite = this.isOffset ? _offsetColor : _baseColor;
         }
     }
     public void SetExplosion(ExplosionBuff explosion)
@@ -99,11 +99,11 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void SetAsWall()
     {
         isWalkable = false;
-        _renderer.color = _wallColor;
+        _renderer.sprite = _wallColor;
     }
     public void SetAsPortal()
     {
         isPortal = true;
-        _renderer.color = _PortalColor;
+        _renderer.sprite = _PortalColor;
     }
 }
