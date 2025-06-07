@@ -107,9 +107,12 @@ MonoBehaviour:
   _baseColor: {r: 0.23255605, g: 0.735849, b: 0.37245175, a: 0.8666667}
   _offsetColor: {r: 0.45977217, g: 0.7924528, b: 0.55743986, a: 0.8509804}
   _wallColor: {r: 1, g: 0, b: 0, a: 0.9019608}
+  _PortalColor: {r: 0.3820755, g: 0.62849903, b: 1, a: 0.8784314}
   _renderer: {fileID: 2257556721308175723}
   _highlight: {fileID: 6635541321866339634}
   isWalkable: 1
+  isPortal: 0
+  isOffset: 0
 --- !u!61 &1903251366274909730
 BoxCollider2D:
   m_ObjectHideFlags: 0

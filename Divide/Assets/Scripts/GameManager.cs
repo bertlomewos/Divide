@@ -24,8 +24,9 @@ public class GameManager : MonoBehaviour
     private int _petriDishCapacity;
     private int _totalNutrients;
     private int _currentBacteriaCount = 0;
-    private List<Bacteria> _bacteriaColony = new List<Bacteria>();
+    [SerializeField]  private List<Bacteria> _bacteriaColony = new List<Bacteria>();
     private int _nutrientsCollected = 0;
+    private bool isExplosionBuffActive = false;
 
     /*UI*/
     public GameObject _youLose;
@@ -116,7 +117,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("CONGRATULATIONS! You have completed all levels!");
             _youWin.gameObject.SetActive(true);
         }
-    }
+    }                
 
     IEnumerator LoadLevelRoutine()
     {
@@ -164,12 +165,24 @@ public class GameManager : MonoBehaviour
         _currentBacteriaCount++;
 
         CheckForNutrient(tile);
+        CheckForExplosion(tile);
 
         Debug.Log($"Bacteria count: {_currentBacteriaCount}/{_petriDishCapacity}");
     }
 
     public void OnTileClicked(Tile clickedTile)
     {
+        if (isExplosionBuffActive)
+        {
+            if (_bacteriaColony.Any(bacteria => IsAdjacent(clickedTile, bacteria.currentTile)))
+            {
+                SpawnBacteria(clickedTile);
+                Explode(clickedTile);
+                isExplosionBuffActive = false;
+                return;
+            }
+        }
+
         foreach (var bacteria in _bacteriaColony.ToList())
         {
             if (IsAdjacent(clickedTile, bacteria.currentTile))
@@ -177,9 +190,33 @@ public class GameManager : MonoBehaviour
                 SpawnBacteria(clickedTile);
                 return;
             }
+
         }
     }
+    public void OnPortalTileClicked(Tile clickedTile)
+    {
+        foreach (var bacteria in _bacteriaColony.ToList())
+        {
+            if (IsAdjacent(clickedTile, bacteria.currentTile))
+            {
+                foreach (var region in GridManager.instance.currentLevelData.portalRegion)
+                {
+                    Vector2 EnterPos = region.EnterPortal;
+                    Vector2 ExitPos = region.ExitPortal;
+                    Tile EnterTile = GridManager.instance.GetTileAtPosition(EnterPos);
+                    Tile ExitTile = GridManager.instance.GetTileAtPosition(ExitPos);
+                    SpawnBacteria(EnterTile);
+                    SpawnBacteria(ExitTile);
+                }
+            }
+            else
+            {
+                Debug.Log($"No adjacent bacteria found for portal tile at {clickedTile.x}, {clickedTile.y}");
+            }
+        }
 
+
+    }
     private void CheckForNutrient(Tile tile)
     {
         if (tile.OccupyingNutrient != null)
@@ -194,6 +231,27 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    private void CheckForExplosion(Tile tile)
+    {
+        if (tile.OccupyingExplosion != null)
+        {
+            tile.ClearExplosion();
+            isExplosionBuffActive = true;
+            Debug.Log($"Explosion buff collected!");
+        }
+    }
+
+    private void Explode(Tile centerTile)
+    {
+        List<Tile> neighbors = GridManager.instance.GetNeighborTiles(centerTile, true);
+        foreach (Tile neighbor in neighbors)
+        {
+            neighbor.ClearWall();
+        }
+    }
+
+
 
     private bool IsAdjacent(Tile tile1, Tile tile2)
     {

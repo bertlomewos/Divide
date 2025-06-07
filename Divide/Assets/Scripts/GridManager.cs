@@ -9,8 +9,11 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Nutrient _nutrientPrefab;
+    [SerializeField] private ExplosionBuff _explosionPrefab;
+    
     [SerializeField] private Transform _cam;
     public int NutrientCount { get; private set; }
+    public int ExplosionBuffCount { get; private set; }
     public int width { get; private set; }
     public int height { get; private set; }
     public int StartX { get; private set; }
@@ -18,7 +21,7 @@ public class GridManager : MonoBehaviour
     public int petriDishCap { get; private set; }
 
     private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
-    private LevelData currentLevelData;
+    public LevelData currentLevelData;
     public static GridManager instance;
 
     private void Awake()
@@ -47,6 +50,7 @@ public class GridManager : MonoBehaviour
         StartY = currentLevelData.SpawnY;
         petriDishCap = currentLevelData.Capacity;
         NutrientCount = currentLevelData.nutrientCoordinates.Count;
+        ExplosionBuffCount = currentLevelData.explosionCoordinates.Count;
 
         GenerateGrid();
     }
@@ -112,6 +116,26 @@ public class GridManager : MonoBehaviour
                 tile.SetNutrient(nutrient);
             }
         }
+
+        foreach (var explosionCoord in currentLevelData.explosionCoordinates)
+        {
+            Tile tile = GetTileAtPosition(explosionCoord);
+            if (tile != null && tile.isWalkable)
+            {
+                var explosion = Instantiate(_explosionPrefab);
+                tile.SetExplosion(explosion);
+            }
+        }
+        foreach(var Place in currentLevelData.portalRegion)
+        {
+            Tile enterTile = GetTileAtPosition(Place.EnterPortal);
+            Tile exitTile = GetTileAtPosition(Place.ExitPortal);
+            if (enterTile != null && exitTile != null)
+            {
+                enterTile.SetAsPortal();
+                exitTile.SetAsPortal();
+            }
+        }
     }
 
     public Tile GetTileAtPosition(Vector2 pos)
@@ -121,5 +145,31 @@ public class GridManager : MonoBehaviour
             return tile;
         }
         return null;
+    }
+
+    public List<Tile> GetNeighborTiles(Tile currentTile, bool includeDiagonals)
+    {
+        List<Tile> neighbours = new List<Tile>();
+
+        int[] x_directions = { -1, 0, 1, -1, 1, -1, 0, 1 };
+        int[] y_directions = { -1, -1, -1, 0, 0, 1, 1, 1 };
+
+        if (!includeDiagonals)
+        {
+            x_directions = new int[] { 0, 0, 1, -1 };
+            y_directions = new int[] { 1, -1, 0, 0 };
+        }
+
+        for (int i = 0; i < x_directions.Length; i++)
+        {
+            Vector2Int neighbourPos = new Vector2Int(currentTile.x + x_directions[i], currentTile.y + y_directions[i]);
+
+            Tile neighbour = GetTileAtPosition(neighbourPos);
+            if (neighbour != null)
+            {
+                neighbours.Add(neighbour);
+            }
+        }
+        return neighbours;
     }
 }
