@@ -13,7 +13,7 @@ public class GridManager : MonoBehaviour
 
     [Header("Game Elements")]
     [SerializeField] private Nutrient _nutrientPrefab;
-    [SerializeField] private GameObject _explosionBuffPrefab;
+    [SerializeField] private ExplosionBuff _explosionBuffPrefab;
 
     [Header("Level Design")]
     [SerializeField] private LevelData currentLevelData;
@@ -113,6 +113,16 @@ public class GridManager : MonoBehaviour
                 tile.SetNutrient(nutrient);
             }
         }
+
+        foreach (var buffCoord in currentLevelData.explosionBuffCoordinates)
+        {
+            Tile tile = GetTileAtPosition(buffCoord);
+            if (tile != null && tile.isWalkable)
+            {
+                var buff = Instantiate(_explosionBuffPrefab);
+                tile.SetExplosionBuff(buff);
+            }
+        }
     }
 
     public Tile GetTileAtPosition(Vector2 pos)
@@ -124,6 +134,33 @@ public class GridManager : MonoBehaviour
 
         return null;
     }
+
+    public List<Tile> GetNeighbourTiles(Tile currentTile, bool includeDiagonals)
+    {
+        List<Tile> neighbours = new List<Tile>();
+
+        int[] x_directions = { -1, 0, 1, -1, 1, -1, 0, 1 };
+        int[] y_directions = { -1, -1, -1, 0, 0, 1, 1, 1 };
+
+        if (!includeDiagonals)
+        {
+            x_directions = new int[] { 0, 0, 1, -1 };
+            y_directions = new int[] { 1, -1, 0, 0 };
+        }
+
+        for (int i = 0; i < x_directions.Length; i++)
+        {
+            Vector2Int neighbourPos = new Vector2Int(currentTile.x + x_directions[i], currentTile.y + y_directions[i]);
+
+            Tile neighbour = GetTileAtPosition(neighbourPos);
+            if (neighbour != null)
+            {
+                neighbours.Add(neighbour);
+            }
+        }
+        return neighbours;
+    }
+
 
     public void RestartScene(int index)
     {

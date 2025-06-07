@@ -60,18 +60,30 @@ public class GameManager : MonoBehaviour
         _currentBacteriaCount++;
 
         CheckForNutrient(tile);
+        CheckForExplosionBuff(tile);
 
         Debug.Log($"Bacteria count: {_currentBacteriaCount}/{_petriDishCapacity}");
     }
 
     public void OnTileClicked(Tile clickedTile)
     {
+        if (isExplosionBuffActive)
+        {
+            if (_bacteriaColony.Any(bacteria => IsAdjacent(clickedTile, bacteria.currentTile)))
+            {
+                SpawnBacteria(clickedTile);
+                Explode(clickedTile); 
+                isExplosionBuffActive = false; 
+                return;
+            }
+        }
+
         foreach (var bacteria in _bacteriaColony.ToList())
         {
             if (IsAdjacent(clickedTile, bacteria.currentTile))
             {
                 SpawnBacteria(clickedTile);
-                return;
+                return; 
             }
         }
     }
@@ -90,6 +102,27 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    private void CheckForExplosionBuff(Tile tile)
+    {
+        if (tile.OccupyingExplosionBuff != null)
+        {
+            tile.ClearExplosionBuff();
+            isExplosionBuffActive = true;
+            Debug.Log("Explosion Buff collected! Next adjacent spawn will explode.");
+        }
+    }
+
+    private void Explode(Tile centerTile)
+    {
+        Debug.Log($"Exploding around tile ({centerTile.x}, {centerTile.y})!");
+        List<Tile> neighbors = GridManager.instance.GetNeighbourTiles(centerTile, true); 
+        foreach (Tile neighbor in neighbors)
+        {
+            neighbor.ClearWall();
+        }
+    }
+
 
     private bool IsAdjacent(Tile tile1, Tile tile2)
     {
