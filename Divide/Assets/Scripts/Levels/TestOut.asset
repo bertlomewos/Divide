@@ -16,6 +16,7 @@ MonoBehaviour:
   height: 9
   SpawnX: 13
   SpawnY: 8
+  Capacity: 13
   wallRegions:
   - startCoordinate: {x: 1, y: 0}
     endCoordinate: {x: 1, y: 7}
