@@ -153,7 +153,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 8894702599201678028, guid: ddbdeb7f92b230044b3ee58f269dd17e, type: 3}
   _cam: {fileID: 519420032}
   _nutrientPrefab: {fileID: 6177658715835494662, guid: 46f121db990e5c74f980b0ccf72280d4, type: 3}
-  _explosionBuffPrefab: {fileID: 0}
+  _explosionBuffPrefab: {fileID: -6771370318120252294, guid: bf28f7fadc7487a48a50e93bcb72c161, type: 3}
   currentLevelData: {fileID: 11400000, guid: 8e7fe3f6cfa1add4081645775231bbed, type: 2}
   StartX: 0
   StartY: 0
@@ -538,6 +538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
+  _divisionAnimationDuration: 0.3
   _petriDishCapacity: 20
 --- !u!4 &618096053
 Transform:
