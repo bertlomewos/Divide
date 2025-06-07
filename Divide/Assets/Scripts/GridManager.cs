@@ -13,6 +13,7 @@ public class GridManager : MonoBehaviour
 
     [Header("Game Elements")]
     [SerializeField] private Nutrient _nutrientPrefab;
+    [SerializeField] private GameObject _explosionBuffPrefab;
 
     [Header("Level Design")]
     [SerializeField] private LevelData currentLevelData;

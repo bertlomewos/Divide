@@ -10,10 +10,13 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public bool isWalkable = true;
     private bool isOccupiedByBacteria = false;
+    public bool isOffset = false;
     public Nutrient OccupyingNutrient { get; private set; }
+    public ExplosionBuff OccupyingExplosionBuff { get; private set; }
 
     public void Init(bool isOffset)
     {
+        this.isOffset = isOffset;
         _renderer.color = isOffset ? _offsetColor : _baseColor;
     }
 
@@ -53,6 +56,15 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
+    public void SetExplosionBuff(ExplosionBuff explosionBuff)
+    {
+        if (explosionBuff != null)
+        {
+            OccupyingExplosionBuff = explosionBuff;
+            explosionBuff.transform.position = this.transform.position;
+        }
+    }
+
     public void ClearNutrient()
     {
         if (OccupyingNutrient != null)
@@ -62,9 +74,27 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
+    public void ClearExplosionBuff()
+    {
+        if (OccupyingExplosionBuff != null)
+        {
+            Destroy(OccupyingExplosionBuff.gameObject);
+            OccupyingExplosionBuff = null;
+        }
+    }
+
     public void SetAsWall()
     {
         isWalkable = false;
         _renderer.color = _wallColor;
+    }
+
+    public void ClearWall()
+    {
+        if (!isWalkable)
+        {
+            isWalkable = true;
+            _renderer.color = this.isOffset ? _offsetColor : _baseColor;
+        }
     }
 }

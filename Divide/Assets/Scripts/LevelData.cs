@@ -17,4 +17,5 @@ public class LevelData : ScriptableObject
     [Header("Level Layout")]
     public List<WallRegion> wallRegions;
     public List<Vector2Int> nutrientCoordinates;
+    public List<Vector2Int> explosionBuffCoordinates;
 }

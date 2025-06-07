@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private int _currentBacteriaCount = 0;
     private List<Bacteria> _bacteriaColony = new List<Bacteria>();
     private int _nutrientsCollected = 0;
+    private bool isExplosionBuffActive = false;
 
     private void Awake()
     {

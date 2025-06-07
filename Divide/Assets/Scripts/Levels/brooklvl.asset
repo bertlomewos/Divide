@@ -20,10 +20,8 @@ MonoBehaviour:
   wallRegions:
   - startCoordinate: {x: 1, y: 1}
     endCoordinate: {x: 1, y: 2}
-  - startCoordinate: {x: 3, y: 3}
+  - startCoordinate: {x: 3, y: 1}
     endCoordinate: {x: 3, y: 4}
-  - startCoordinate: {x: 3, y: 3}
-    endCoordinate: {x: 4, y: 3}
   nutrientCoordinates:
   - {x: 0, y: 2}
   - {x: 1, y: 4}
