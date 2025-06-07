@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Configuration")]
     [SerializeField] private Bacteria _bacteriaPrefab;
+    [SerializeField] private float _divisionAnimationDuration = 0.3f;
     [SerializeField] private int _petriDishCapacity = 25;
 
     private int _totalNutrients;
@@ -37,7 +38,14 @@ public class GameManager : MonoBehaviour
         Tile startTile = GridManager.instance.GetTileAtPosition(new Vector2(GridManager.instance.StartX, GridManager.instance.StartY));
         if (startTile != null && startTile.isWalkable)
         {
-            SpawnBacteria(startTile);
+            var newBacteria = Instantiate(_bacteriaPrefab, startTile.transform.position, Quaternion.identity);
+            newBacteria.currentTile = startTile;
+            startTile.SetOccupied(true);
+            _bacteriaColony.Add(newBacteria);
+            _currentBacteriaCount++;
+
+            CheckForNutrient(startTile);
+            CheckForExplosionBuff(startTile);
         }
         else
         {
@@ -45,7 +53,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SpawnBacteria(Tile tile)
+    private void SpawnBacteria(Tile targetTile, Bacteria parentBacteria)
     {
         if (_currentBacteriaCount >= _petriDishCapacity)
         {
@@ -53,38 +61,36 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        var newBacteria = Instantiate(_bacteriaPrefab, tile.transform.position, Quaternion.identity);
-        newBacteria.MoveToTile(tile);
-        tile.SetOccupied(true);
+        var newBacteria = Instantiate(_bacteriaPrefab, parentBacteria.transform.position, Quaternion.identity);
+
+        newBacteria.AnimateSpawn(targetTile, parentBacteria.transform.position, _divisionAnimationDuration);
+        parentBacteria.AnimateDivisionShrink(_divisionAnimationDuration);
+
+        targetTile.SetOccupied(true);
         _bacteriaColony.Add(newBacteria);
         _currentBacteriaCount++;
 
-        CheckForNutrient(tile);
-        CheckForExplosionBuff(tile);
+        CheckForNutrient(targetTile);
+        CheckForExplosionBuff(targetTile);
 
         Debug.Log($"Bacteria count: {_currentBacteriaCount}/{_petriDishCapacity}");
     }
 
     public void OnTileClicked(Tile clickedTile)
     {
+        Bacteria parentBacteria = _bacteriaColony.FirstOrDefault(b => IsAdjacent(clickedTile, b.currentTile));
+
+        if (parentBacteria == null) return;
+
         if (isExplosionBuffActive)
         {
-            if (_bacteriaColony.Any(bacteria => IsAdjacent(clickedTile, bacteria.currentTile)))
-            {
-                SpawnBacteria(clickedTile);
-                Explode(clickedTile); 
-                isExplosionBuffActive = false; 
-                return;
-            }
+            SpawnBacteria(clickedTile, parentBacteria);
+            Explode(clickedTile);
+            isExplosionBuffActive = false;
         }
-
-        foreach (var bacteria in _bacteriaColony.ToList())
+        else
         {
-            if (IsAdjacent(clickedTile, bacteria.currentTile))
-            {
-                SpawnBacteria(clickedTile);
-                return; 
-            }
+            SpawnBacteria(clickedTile, parentBacteria);
         }
     }
 
@@ -102,6 +108,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
 
     private void CheckForExplosionBuff(Tile tile)
     {
