@@ -60,7 +60,7 @@ public class LevelGenerator : MonoBehaviour
         walls[spawnPos.x, spawnPos.y] = false;
 
         // Generate maze
-        GenerateMaze(walls, width, height);
+        GenerateMaze(walls, width, height, spawnPos);
 
         // Place nutrients in hard-to-reach areas
         nutrientCount = Mathf.Min(nutrientCount, availablePositions.Count);
@@ -73,7 +73,7 @@ public class LevelGenerator : MonoBehaviour
             availablePositions.Remove(pos);
         }
 
-        // Place explosion buffs near nutrients or in strategic locations
+        // Place explosion buffs in strategic locations
         explosionBuffCount = Mathf.Min(explosionBuffCount, availablePositions.Count);
         for (int i = 0; i < explosionBuffCount; i++)
         {
@@ -112,7 +112,7 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        // Verify solvability and calculate optimal moves
+        // Verify solvability
         int optimalMoves = CalculateOptimalPathCost(levelData);
         if (optimalMoves == -1)
         {
@@ -124,12 +124,11 @@ public class LevelGenerator : MonoBehaviour
         return levelData;
     }
 
-    private void GenerateMaze(bool[,] walls, int width, int height)
+    private void GenerateMaze(bool[,] walls, int width, int height, Vector2Int startPos)
     {
         Stack<Vector2Int> stack = new Stack<Vector2Int>();
-        Vector2Int start = new Vector2Int(Random.Range(0, width), Random.Range(0, height));
-        walls[start.x, start.y] = false;
-        stack.Push(start);
+        walls[startPos.x, startPos.y] = false;
+        stack.Push(startPos);
 
         int[] dx = { 0, 0, 2, -2 };
         int[] dy = { 2, -2, 0, 0 };
@@ -161,9 +160,30 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                if (!walls[x, y] && Random.value < 0.15f)
+                if (!walls[x, y] && Random.value < 0.1f && new Vector2Int(x, y) != startPos)
                     walls[x, y] = true;
             }
+        }
+
+        // Ensure at least one open tile next to spawn
+        int[] dxAdj = { 1, -1, 0, 0 };
+        int[] dyAdj = { 0, 0, 1, -1 };
+        bool hasOpenNeighbor = false;
+        for (int i = 0; i < 4; i++)
+        {
+            int nx = startPos.x + dxAdj[i], ny = startPos.y + dyAdj[i];
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height && !walls[nx, ny])
+            {
+                hasOpenNeighbor = true;
+                break;
+            }
+        }
+        if (!hasOpenNeighbor)
+        {
+            int i = Random.Range(0, 4);
+            int nx = startPos.x + dxAdj[i], ny = startPos.y + dyAdj[i];
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+                walls[nx, ny] = false;
         }
     }
 
@@ -178,45 +198,47 @@ public class LevelGenerator : MonoBehaviour
 
     private Vector2Int FindHardToReachPosition(List<Vector2Int> positions, bool[,] walls, int width, int height, Vector2Int spawnPos, List<Vector2Int> nutrientCoordinates, bool hasExplosions)
     {
-        // Prefer positions far from spawn and other nutrients, with walls if explosions are present
-        int minSpawnDistance = (width >= 5 || height >= 5) ? 4 : 3;
+        // Relaxed constraints for solvability
+        int minSpawnDistance = (width >= 5 || height >= 5) ? 3 : 2;
         var candidates = positions
-            .Where(p => p != spawnPos && ManhattanDistance(p, spawnPos) > minSpawnDistance)
-            .Where(p => nutrientCoordinates.Count == 0 || nutrientCoordinates.All(n => ManhattanDistance(p, n) > 3))
+            .Where(p => p != spawnPos && ManhattanDistance(p, spawnPos) >= minSpawnDistance)
+            .Where(p => nutrientCoordinates.Count == 0 || nutrientCoordinates.All(n => ManhattanDistance(p, n) >= 2))
             .Select(p => new { Pos = p, WallCount = CountAdjacentWalls(p, walls, width, height) })
-            .Where(p => !hasExplosions || p.WallCount >= 2)
+            .Where(p => !hasExplosions || p.WallCount >= 1)
             .OrderByDescending(p => hasExplosions ? p.WallCount : ManhattanDistance(p.Pos, spawnPos))
             .Take(10)
             .ToList();
 
-        if (candidates.Count == 0) return PopRandomPosition(positions);
+        if (candidates.Count == 0)
+            return PopRandomPosition(positions);
         return candidates[Random.Range(0, candidates.Count)].Pos;
     }
 
     private Vector2Int FindStrategicPosition(List<Vector2Int> positions, bool[,] walls, int width, int height, List<Vector2Int> nutrients)
     {
-        // Place near nutrients with walls
+        // Avoid placing explosions too close to nutrients
         var candidates = positions
-            .Where(p => nutrients.Any(n => ManhattanDistance(p, n) <= 2))
+            .Where(p => nutrients.All(n => ManhattanDistance(p, n) > 1))
             .Select(p => new { Pos = p, WallCount = CountAdjacentWalls(p, walls, width, height) })
             .Where(p => p.WallCount > 0)
             .OrderByDescending(p => p.WallCount)
             .Take(5)
             .ToList();
 
-        if (candidates.Count == 0) return PopRandomPosition(positions);
+        if (candidates.Count == 0)
+            return PopRandomPosition(positions);
         return candidates[Random.Range(0, candidates.Count)].Pos;
     }
 
     private Vector2Int FindDistantPosition(List<Vector2Int> positions, bool[,] walls, int width, int height, Vector2Int referencePos)
     {
-        // Place in distant regions
         var candidates = positions
             .OrderByDescending(p => ManhattanDistance(p, referencePos))
             .Take(5)
             .ToList();
 
-        if (candidates.Count == 0) return PopRandomPosition(positions);
+        if (candidates.Count == 0)
+            return PopRandomPosition(positions);
         return candidates[Random.Range(0, candidates.Count)];
     }
 

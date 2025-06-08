@@ -675,7 +675,7 @@ MonoBehaviour:
   baseWidth: 3
   baseHeight: 3
   baseNutrients: 1
-  baseLeniency: 1
+  baseLeniency: 2
   delayBeforeNextLevel: 2
   _bacteriaColony: []
   _youLose: {fileID: 1471600827}
