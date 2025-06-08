@@ -19,7 +19,11 @@ MonoBehaviour:
   Capacity: 100
   wallRegions:
   - startCoordinate: {x: 1, y: 1}
-    endCoordinate: {x: 1, y: 1}
+    endCoordinate: {x: 1, y: 4}
+  - startCoordinate: {x: 4, y: 4}
+    endCoordinate: {x: 5, y: 4}
+  - startCoordinate: {x: 4, y: 4}
+    endCoordinate: {x: 4, y: 5}
   portalRegion:
   - EnterPortal: {x: 0, y: 0}
     ExitPortal: {x: 5, y: 5}
