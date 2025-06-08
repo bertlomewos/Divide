@@ -12,23 +12,24 @@ public class GameManager : MonoBehaviour
     [Header("Game Configuration")]
     [SerializeField] private Bacteria _bacteriaPrefab;
 
-    [Header("Level Progression")]
-    [SerializeField] private List<LevelData> levelProgression; 
-    [SerializeField] private float delayBeforeNextLevel = 2f;
-    private int currentLevelIndex = 0;
+    [Header("Level 1 Generation Settings")]
+    [SerializeField] private int baseWidth = 3;
+    [SerializeField] private int baseHeight = 3;
+    [SerializeField] private int baseNutrients = 1;
+    [SerializeField] private int baseLeniency = 1;
 
-    // [Header("Camera Control")]
-    // [SerializeField] private Camera _mainCamera;
-    // [SerializeField] private float _cameraSmoothSpeed = 0.125f;
+    [Header("Timing")]
+    [SerializeField] private float delayBeforeNextLevel = 2f;
+    private int currentLevel = 1;
 
     private int _petriDishCapacity;
     private int _totalNutrients;
     private int _currentBacteriaCount = 0;
-    [SerializeField]  private List<Bacteria> _bacteriaColony = new List<Bacteria>();
+    [SerializeField] private List<Bacteria> _bacteriaColony = new List<Bacteria>();
     private int _nutrientsCollected = 0;
     private bool isExplosionBuffActive = false;
 
-    /*UI*/
+    [Header("UI References")]
     public GameObject _youLose;
     public GameObject _youWin;
 
@@ -42,140 +43,183 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        // if (_mainCamera == null)
-        // {
-        //     _mainCamera = Camera.main;
-        // }
     }
 
     void Start()
     {
-        if (levelProgression.Count > 0)
-        {
-            StartLevel(currentLevelIndex);
-        }
-        else
-        {
-            Debug.LogError("No levels assigned to the Level Progression list in GameManager!");
-        }
+        Debug.Log("GameManager Start: Initializing level...");
+        StartNewLevel();
     }
 
     private void Update()
     {
         if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
         {
-            
+            Debug.Log("Restart key pressed. Reloading scene.");
             LoadScene(0);
         }
     }
 
-    /*
-    private void LateUpdate()
+    void StartNewLevel()
     {
-        if (_bacteriaColony.Count == 0) return;
+        if (_youWin != null) _youWin.SetActive(false);
+        if (_youLose != null) _youLose.SetActive(false);
 
-        Vector3 centerPoint = GetCenterPoint();
-        Vector3 cameraDestination = new Vector3(centerPoint.x, centerPoint.y, _mainCamera.transform.position.z);
-        
-        _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position, cameraDestination, _cameraSmoothSpeed);
-    }
-    */
+        // Scale difficulty with level
+        int width = baseWidth + (currentLevel - 1) / 2;
+        int height = baseHeight + (currentLevel - 1) / 2;
+        int nutrients = Mathf.Min(baseNutrients + (currentLevel - 1) / 5, 3);
+        int leniency = Mathf.Max(0, baseLeniency - (currentLevel - 1) / 2);
+        int explosions = (currentLevel >= 2 && currentLevel % 2 == 0) ? 1 : 0;
+        int portals = (currentLevel >= 4 && currentLevel % 3 == 0) ? 1 : 0;
 
-    void StartLevel(int levelIndex)
-    {
-        GridManager.instance.BuildLevel(levelProgression[levelIndex]);
+        Debug.Log($"Starting Level {currentLevel}: Leniency={leniency}, Width={width}, Height={height}, Nutrients={nutrients}, Explosions={explosions}, Portals={portals}");
 
-        _totalNutrients = GridManager.instance.NutrientCount;
-        _petriDishCapacity = GridManager.instance.petriDishCap;
-        _nutrientsCollected = 0;
-        _currentBacteriaCount = 0;
+        LevelData newLevelData = LevelGenerator.instance.GenerateLevel(width, height, nutrients, explosions, portals, leniency);
 
-        Vector2 startPos = new Vector2(GridManager.instance.StartX, GridManager.instance.StartY);
-        Tile startTile = GridManager.instance.GetTileAtPosition(startPos);
-
-        if (startTile != null && startTile.isWalkable)
+        if (newLevelData == null)
         {
-            SpawnBacteria(startTile);
+            Debug.LogError("FATAL: Could not generate a valid level.");
+            LoadScene(0);
+            return;
         }
-        else
+
+        GridManager.instance.BuildLevel(newLevelData);
+
+        _totalNutrients = newLevelData.nutrientCoordinates.Count;
+        _petriDishCapacity = newLevelData.Capacity;
+
+        Debug.Log($"Spawn point set to: ({newLevelData.SpawnX}, {newLevelData.SpawnY})");
+        Tile spawnTile = GridManager.instance.GetTileAtPosition(new Vector2Int(newLevelData.SpawnX, newLevelData.SpawnY));
+        if (spawnTile == null)
         {
-            Debug.LogError($"Start tile ({startPos.x},{startPos.y}) for Level {levelIndex + 1} is blocked or does not exist!");
+            Debug.LogError($"Spawn tile at ({newLevelData.SpawnX}, {newLevelData.SpawnY}) is null! Aborting spawn.");
+            return;
+        }
+        if (!spawnTile.isWalkable)
+        {
+            Debug.LogError($"Spawn tile at ({newLevelData.SpawnX}, {newLevelData.SpawnY}) is not walkable! Forcing walkable.");
+            spawnTile.ClearWall();
+        }
+        if (spawnTile.OccupyingNutrient != null || spawnTile.OccupyingExplosion != null)
+        {
+            Debug.LogWarning($"Spawn tile at ({newLevelData.SpawnX}, {newLevelData.SpawnY}) has nutrient or explosion buff!");
+        }
+
+        _currentBacteriaCount = 0;
+        try
+        {
+            SpawnBacteria(spawnTile);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Exception in SpawnBacteria: {ex.Message}\n{ex.StackTrace}");
         }
     }
 
     void LoadNextLevel()
     {
-        currentLevelIndex++;
-        if (currentLevelIndex < levelProgression.Count)
-        {
-            Debug.Log($"LEVEL COMPLETE! Loading Level {currentLevelIndex + 1}...");
-            StartCoroutine(LoadLevelRoutine());
-        }
-        else
-        {
-            Debug.Log("CONGRATULATIONS! You have completed all levels!");
-            _youWin.gameObject.SetActive(true);
-        }
-    }                
+        currentLevel++;
+        Debug.Log($"LEVEL COMPLETE! Loading Level {currentLevel}...");
+        StartCoroutine(LoadLevelRoutine());
+    }
 
     IEnumerator LoadLevelRoutine()
     {
-        yield return new WaitForSeconds(delayBeforeNextLevel);
-
         foreach (var bacteria in _bacteriaColony)
         {
             if (bacteria != null) Destroy(bacteria.gameObject);
         }
         _bacteriaColony.Clear();
+        _nutrientsCollected = 0;
+        _currentBacteriaCount = 0;
 
-        StartLevel(currentLevelIndex);
+        StartNewLevel();
+
+        yield return null;
     }
 
-    /*
-    private Vector3 GetCenterPoint()
+    private void CheckForNutrient(Tile tile)
     {
-        if (_bacteriaColony.Count == 1)
+        if (tile.OccupyingNutrient != null)
         {
-            return _bacteriaColony[0].transform.position;
-        }
+            tile.ClearNutrient();
+            _nutrientsCollected++;
+            Debug.Log($"Nutrient collected! Total: {_nutrientsCollected}/{_totalNutrients}");
 
-        var bounds = new Bounds(_bacteriaColony[0].transform.position, Vector3.zero);
-        for (int i = 0; i < _bacteriaColony.Count; i++)
-        {
-            bounds.Encapsulate(_bacteriaColony[i].transform.position);
+            if (_nutrientsCollected >= _totalNutrients)
+            {
+                _youWin.SetActive(true);
+                StartCoroutine(WinSequenceRoutine());
+            }
         }
-        return bounds.center;
     }
-    */
+
+    IEnumerator WinSequenceRoutine()
+    {
+        yield return new WaitForSeconds(delayBeforeNextLevel);
+        LoadNextLevel();
+    }
+
     private void SpawnBacteria(Tile tile, Bacteria parentBacteria = null)
     {
+        if (tile == null)
+        {
+            Debug.LogError("Cannot spawn bacteria: Tile is null!");
+            return;
+        }
+        if (!tile.isWalkable)
+        {
+            Debug.LogError($"Cannot spawn bacteria: Tile at ({tile.x}, {tile.y}) is not walkable!");
+            return;
+        }
         if (_currentBacteriaCount >= _petriDishCapacity)
         {
             Debug.Log($"Petri dish is full! Capacity: {_petriDishCapacity}. Game Over!");
-            _youLose.gameObject.SetActive(true);
+            _youLose.SetActive(true);
             return;
         }
-
+        if (_bacteriaPrefab == null)
+        {
+            Debug.LogError("Bacteria prefab is not assigned in GameManager!");
+            return;
+        }
         if (parentBacteria != null)
         {
-            parentBacteria.PerformDivisionShrink();
+            try
+            {
+                parentBacteria.PerformDivisionShrink();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Exception in PerformDivisionShrink: {ex.Message}\n{ex.StackTrace}");
+                return;
+            }
         }
-
         Vector3 spawnPosition = (parentBacteria != null) ? parentBacteria.transform.position : tile.transform.position;
         var newBacteria = Instantiate(_bacteriaPrefab, spawnPosition, Quaternion.identity);
-
-        newBacteria.MoveToTile(tile, parentBacteria); 
+        if (newBacteria == null)
+        {
+            Debug.LogError($"Failed to instantiate bacteria at ({tile.x}, {tile.y})!");
+            return;
+        }
+        try
+        {
+            newBacteria.MoveToTile(tile, parentBacteria);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Exception in MoveToTile: {ex.Message}\n{ex.StackTrace}");
+            Destroy(newBacteria.gameObject);
+            return;
+        }
         tile.SetOccupied(true);
         _bacteriaColony.Add(newBacteria);
         _currentBacteriaCount++;
-
-        CheckForNutrient(tile);
         CheckForExplosion(tile);
-
-        Debug.Log($"Bacteria count: {_currentBacteriaCount}/{_petriDishCapacity}");
+        CheckForNutrient(tile);
+        Debug.Log($"Bacteria spawned at ({tile.x}, {tile.y}). Count: {_currentBacteriaCount}/{_petriDishCapacity}. GameObject: {newBacteria.name}");
     }
-
 
     public void OnTileClicked(Tile clickedTile)
     {
@@ -189,53 +233,51 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-
         foreach (var bacteria in _bacteriaColony.ToList())
         {
             if (IsAdjacent(clickedTile, bacteria.currentTile))
             {
-                SpawnBacteria(clickedTile, bacteria); 
+                SpawnBacteria(clickedTile, bacteria);
                 return;
             }
         }
     }
 
-    public void OnPortalTileClicked(Tile clickedTile)
+    public void OnPortalTileClicked(Tile clickedPortalTile)
     {
-        foreach (var bacteria in _bacteriaColony.ToList())
+        Bacteria adjacentBacteria = _bacteriaColony.FirstOrDefault(b => IsAdjacent(clickedPortalTile, b.currentTile));
+        if (adjacentBacteria != null)
         {
-            if (IsAdjacent(clickedTile, bacteria.currentTile))
+            Vector2 enterPos = new Vector2(clickedPortalTile.x, clickedPortalTile.y);
+            Vector2 exitPos = Vector2.zero;
+            bool foundPortal = false;
+            foreach (var region in GridManager.instance.currentLevelData.portalRegion)
             {
-                foreach (var region in GridManager.instance.currentLevelData.portalRegion)
+                if (region.EnterPortal == enterPos)
                 {
-                    Vector2 EnterPos = region.EnterPortal;
-                    Vector2 ExitPos = region.ExitPortal;
-                    Tile EnterTile = GridManager.instance.GetTileAtPosition(EnterPos);
-                    Tile ExitTile = GridManager.instance.GetTileAtPosition(ExitPos);
-                    SpawnBacteria(EnterTile);
-                    SpawnBacteria(ExitTile);
+                    exitPos = region.ExitPortal;
+                    foundPortal = true;
+                    break;
+                }
+                if (region.ExitPortal == enterPos)
+                {
+                    exitPos = region.EnterPortal;
+                    foundPortal = true;
+                    break;
                 }
             }
-            else
+            if (foundPortal)
             {
-                Debug.Log($"No adjacent bacteria found for portal tile at {clickedTile.x}, {clickedTile.y}");
+                Tile exitTile = GridManager.instance.GetTileAtPosition(exitPos);
+                if (exitTile != null && exitTile.isWalkable)
+                {
+                    SpawnBacteria(exitTile, adjacentBacteria);
+                }
             }
         }
-
-
-    }
-    private void CheckForNutrient(Tile tile)
-    {
-        if (tile.OccupyingNutrient != null)
+        else
         {
-            tile.ClearNutrient();
-            _nutrientsCollected++;
-            Debug.Log($"Nutrient collected! Total: {_nutrientsCollected}/{_totalNutrients}");
-
-            if (_nutrientsCollected >= _totalNutrients)
-            {
-                LoadNextLevel();
-            }
+            Debug.Log($"No adjacent bacteria found for portal tile at ({clickedPortalTile.x}, {clickedPortalTile.y})");
         }
     }
 
@@ -257,8 +299,6 @@ public class GameManager : MonoBehaviour
             neighbor.ClearWall();
         }
     }
-
-
 
     private bool IsAdjacent(Tile tile1, Tile tile2)
     {

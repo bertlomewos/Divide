@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17da076a8dfdd9d42979de5c8bd33578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  petriDishObject: {fileID: 1592169864}
   _tilePrefab: {fileID: 8894702599201678028, guid: ddbdeb7f92b230044b3ee58f269dd17e, type: 3}
   _nutrientPrefab: {fileID: 6177658715835494662, guid: 46f121db990e5c74f980b0ccf72280d4, type: 3}
   _explosionPrefab: {fileID: 5103299356832983180, guid: 792d7aa45a828494fa74058bf9e1800b, type: 3}
@@ -671,12 +672,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
-  levelProgression:
-  - {fileID: 11400000, guid: fdf365617518d6446aab080604401b48, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  baseWidth: 3
+  baseHeight: 3
+  baseNutrients: 1
+  baseLeniency: 1
   delayBeforeNextLevel: 2
   _bacteriaColony: []
   _youLose: {fileID: 1471600827}
@@ -1214,6 +1213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1592169866}
   - component: {fileID: 1592169865}
+  - component: {fileID: 1592169867}
   m_Layer: 0
   m_Name: Petri_0
   m_TagString: Untagged
@@ -1291,6 +1291,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1592169867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592169864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd27e73fcecc5af4db2de898014fe2c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
 
 public class GridManager : MonoBehaviour
 {
+    [Header("Object References")]
+    [SerializeField] private GameObject petriDishObject;
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Nutrient _nutrientPrefab;
     [SerializeField] private ExplosionBuff _explosionPrefab;
-    
     [SerializeField] private Transform _cam;
+
+    [Header("Level Properties")]
     public int NutrientCount { get; private set; }
     public int ExplosionBuffCount { get; private set; }
     public int width { get; private set; }
@@ -36,22 +37,41 @@ public class GridManager : MonoBehaviour
         }
     }
 
-   
     public void BuildLevel(LevelData levelData)
     {
         this.currentLevelData = levelData;
-        ClearGrid(); 
+        ClearGrid();
 
-      
         width = currentLevelData.width;
         height = currentLevelData.height;
+
+        UpdatePetriDishTransform(width, height);
+
         StartX = currentLevelData.SpawnX;
         StartY = currentLevelData.SpawnY;
         petriDishCap = currentLevelData.Capacity;
         NutrientCount = currentLevelData.nutrientCoordinates.Count;
         ExplosionBuffCount = currentLevelData.explosionCoordinates.Count;
 
+        Debug.Log($"Building level with spawn point at ({StartX}, {StartY}), capacity: {petriDishCap}, nutrients: {NutrientCount}");
+
         GenerateGrid();
+
+        // Verify spawn tile after generation
+        Tile spawnTile = GetTileAtPosition(new Vector2(StartX, StartY));
+        if (spawnTile == null)
+        {
+            Debug.LogError($"Spawn tile at ({StartX}, {StartY}) is null after grid generation!");
+        }
+        else if (!spawnTile.isWalkable)
+        {
+            Debug.LogWarning($"Spawn tile at ({StartX}, {StartY}) is not walkable! Forcing walkable state.");
+            spawnTile.ClearWall(); // Ensure spawn tile is walkable
+        }
+        else
+        {
+            Debug.Log($"Spawn tile at ({StartX}, {StartY}) is walkable and ready.");
+        }
     }
 
     private void ClearGrid()
@@ -80,9 +100,10 @@ public class GridManager : MonoBehaviour
                 _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
+
         if (_cam != null)
         {
-            _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10f);
+            _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10f);
         }
 
         LoadLevelLayout();
@@ -90,13 +111,17 @@ public class GridManager : MonoBehaviour
 
     private void LoadLevelLayout()
     {
-        
         foreach (var region in currentLevelData.wallRegions)
         {
             for (int x = region.startCoordinate.x; x <= region.endCoordinate.x; x++)
             {
                 for (int y = region.startCoordinate.y; y <= region.endCoordinate.y; y++)
                 {
+                    if (x == StartX && y == StartY)
+                    {
+                        Debug.Log($"Skipping wall placement at spawn point ({x}, {y})");
+                        continue;
+                    }
                     Tile tile = GetTileAtPosition(new Vector2(x, y));
                     if (tile != null)
                     {
@@ -111,7 +136,7 @@ public class GridManager : MonoBehaviour
             Tile tile = GetTileAtPosition(nutrientCoord);
             if (tile != null && tile.isWalkable)
             {
-                var nutrient = Instantiate(_nutrientPrefab);
+                var nutrient = Instantiate(_nutrientPrefab, tile.transform.position, Quaternion.identity, tile.transform);
                 tile.SetNutrient(nutrient);
             }
         }
@@ -121,20 +146,50 @@ public class GridManager : MonoBehaviour
             Tile tile = GetTileAtPosition(explosionCoord);
             if (tile != null && tile.isWalkable)
             {
-                var explosion = Instantiate(_explosionPrefab);
+                var explosion = Instantiate(_explosionPrefab, tile.transform.position, Quaternion.identity, tile.transform);
                 tile.SetExplosion(explosion);
             }
         }
-        foreach(var Place in currentLevelData.portalRegion)
+
+        foreach (var portalRegion in currentLevelData.portalRegion)
         {
-            Tile enterTile = GetTileAtPosition(Place.EnterPortal);
-            Tile exitTile = GetTileAtPosition(Place.ExitPortal);
+            Tile enterTile = GetTileAtPosition(portalRegion.EnterPortal);
+            Tile exitTile = GetTileAtPosition(portalRegion.ExitPortal);
             if (enterTile != null && exitTile != null)
             {
                 enterTile.SetAsPortal();
                 exitTile.SetAsPortal();
             }
         }
+    }
+
+    private void UpdatePetriDishTransform(int gridWidth, int gridHeight)
+    {
+        if (petriDishObject == null)
+        {
+            Debug.LogWarning("Petri Dish GameObject not assigned in the GridManager.");
+            return;
+        }
+
+        float dishPosX = (float)gridWidth / 2 - 0.5f;
+        float dishPosY = (float)gridHeight / 2 - 0.5f;
+        petriDishObject.transform.position = new Vector3(dishPosX, dishPosY, 1);
+
+        SpriteRenderer dishSpriteRenderer = petriDishObject.GetComponent<SpriteRenderer>();
+        if (dishSpriteRenderer == null || dishSpriteRenderer.sprite == null)
+        {
+            Debug.LogError("Petri Dish is missing its SpriteRenderer or Sprite!");
+            return;
+        }
+
+        Vector2 spriteSize = dishSpriteRenderer.sprite.bounds.size;
+
+        float gridDiagonal = Mathf.Sqrt(gridWidth * gridWidth + gridHeight * gridHeight);
+        float padding = 1.0f;
+        float desiredDiameter = gridDiagonal + padding;
+
+        float scale = desiredDiameter / spriteSize.x;
+        petriDishObject.transform.localScale = new Vector3(scale, scale, 1);
     }
 
     public Tile GetTileAtPosition(Vector2 pos)
@@ -150,13 +205,13 @@ public class GridManager : MonoBehaviour
     {
         List<Tile> neighbours = new List<Tile>();
 
-        int[] x_directions = { -1, 0, 1, -1, 1, -1, 0, 1 };
-        int[] y_directions = { -1, -1, -1, 0, 0, 1, 1, 1 };
+        int[] x_directions = { 0, 0, 1, -1 };
+        int[] y_directions = { 1, -1, 0, 0 };
 
-        if (!includeDiagonals)
+        if (includeDiagonals)
         {
-            x_directions = new int[] { 0, 0, 1, -1 };
-            y_directions = new int[] { 1, -1, 0, 0 };
+            x_directions = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+            y_directions = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
         }
 
         for (int i = 0; i < x_directions.Length; i++)
@@ -170,5 +225,10 @@ public class GridManager : MonoBehaviour
             }
         }
         return neighbours;
+    }
+
+    public Tile FindWalkableTile()
+    {
+        return _tiles.Values.FirstOrDefault(t => t.isWalkable);
     }
 }
