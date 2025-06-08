@@ -672,7 +672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
   levelProgression:
-  - {fileID: 11400000, guid: 3de7162c6f1338a45a78cb177b004b21, type: 2}
+  - {fileID: 11400000, guid: a1432844cecc5d94d918ce5cbbdd7431, type: 2}
   delayBeforeNextLevel: 2
   _bacteriaColony: []
   _youLose: {fileID: 1471600827}
@@ -1281,7 +1281,7 @@ Transform:
   m_GameObject: {fileID: 1592169864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0.6, y: -0.2, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

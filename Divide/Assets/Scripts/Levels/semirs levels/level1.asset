@@ -16,7 +16,7 @@ MonoBehaviour:
   height: 9
   SpawnX: 0
   SpawnY: 8
-  Capacity: 27
+  Capacity: 31
   wallRegions:
   - startCoordinate: {x: 0, y: 0}
     endCoordinate: {x: 0, y: 7}
@@ -36,6 +36,8 @@ MonoBehaviour:
     endCoordinate: {x: 1, y: 3}
   - startCoordinate: {x: 3, y: 3}
     endCoordinate: {x: 3, y: 3}
+  - startCoordinate: {x: 8, y: 3}
+    endCoordinate: {x: 8, y: 4}
   portalRegion:
   - EnterPortal: {x: 2, y: 8}
     ExitPortal: {x: 1, y: 5}
@@ -45,6 +47,5 @@ MonoBehaviour:
   - {x: 8, y: 7}
   - {x: 4, y: 3}
   explosionCoordinates:
-  - {x: 3, y: 2}
-  - {x: 5, y: 4}
-  - {x: 3, y: 5}
+  - {x: 6, y: 4}
+  - {x: 6, y: 2}
