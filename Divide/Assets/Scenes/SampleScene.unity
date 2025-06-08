@@ -672,7 +672,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
   levelProgression:
-  - {fileID: 11400000, guid: 3de7162c6f1338a45a78cb177b004b21, type: 2}
+  - {fileID: 11400000, guid: 4d23922e0bdae844190c3d5013aa3775, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: fdf365617518d6446aab080604401b48, type: 2}
+  - {fileID: 11400000, guid: 008f74cd069410f4ca526c50fd24aef9, type: 2}
+  - {fileID: 11400000, guid: 8753294d5e9a0b04a85488c3570b313c, type: 2}
   delayBeforeNextLevel: 2
   _bacteriaColony: []
   _youLose: {fileID: 1471600827}
