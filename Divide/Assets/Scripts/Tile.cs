@@ -13,7 +13,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private bool isOccupiedByBacteria = false;
     public bool isOffset = false;
     public Nutrient OccupyingNutrient { get; private set; }
-    public ExplosionBuff OccupyingExplosion {  get; private set; }
+    public ExplosionBuff OccupyingExplosion { get; private set; }
 
     public void Init(bool isOffset)
     {
@@ -54,7 +54,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void SetNutrient(Nutrient nutrient)
     {
-        if (nutrient != null)       
+        if (nutrient != null)
         {
             OccupyingNutrient = nutrient;
             nutrient.transform.position = this.transform.position;
@@ -87,6 +87,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             _renderer.sprite = this.isOffset ? _offsetColor : _baseColor;
         }
     }
+
     public void SetExplosion(ExplosionBuff explosion)
     {
         if (explosion != null)
@@ -101,6 +102,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         isWalkable = false;
         _renderer.sprite = _wallColor;
     }
+
     public void SetAsPortal()
     {
         isPortal = true;

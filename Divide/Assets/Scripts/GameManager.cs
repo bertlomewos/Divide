@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int baseWidth = 3;
     [SerializeField] private int baseHeight = 3;
     [SerializeField] private int baseNutrients = 1;
-    [SerializeField] private int baseLeniency = 1;
+    [SerializeField] private int baseLeniency = 2; // Increased to 2 for playability
 
     [Header("Timing")]
     [SerializeField] private float delayBeforeNextLevel = 2f;
@@ -65,21 +65,42 @@ public class GameManager : MonoBehaviour
         if (_youWin != null) _youWin.SetActive(false);
         if (_youLose != null) _youLose.SetActive(false);
 
-        // Scale difficulty with level
-        int width = baseWidth + (currentLevel - 1) / 2;
-        int height = baseHeight + (currentLevel - 1) / 2;
+        // Adjust minimum grid size based on elements
+        int elementCount = baseNutrients + (currentLevel - 1) / 5; // Base nutrients
+        elementCount += (currentLevel >= 2 && currentLevel % 2 == 0) ? 1 : 0; // Explosions
+        elementCount += (currentLevel >= 4 && currentLevel % 3 == 0) ? 2 : 0; // Portals (2 tiles)
+        int minGridSize = elementCount > 1 ? 4 : 3; // Increase to 4 if multiple elements
+
+        // Randomize grid size with level progression
+        int minWidth = Mathf.Max(baseWidth + (currentLevel - 1) / 2, minGridSize);
+        int minHeight = Mathf.Max(baseHeight + (currentLevel - 1) / 2, minGridSize);
+        int maxWidth = minWidth + Random.Range(0, 2);
+        int maxHeight = minHeight + Random.Range(0, 2);
+        int width = Mathf.Clamp(Random.Range(minWidth, maxWidth + 1), minGridSize, 7);
+        int height = Mathf.Clamp(Random.Range(minHeight, maxHeight + 1), minGridSize, 7);
+
+        // Nutrient count capped at 3 to ensure performance in TSP solver. Increase cap only with optimized solver.
         int nutrients = Mathf.Min(baseNutrients + (currentLevel - 1) / 5, 3);
-        int leniency = Mathf.Max(0, baseLeniency - (currentLevel - 1) / 2);
+        int leniency = Mathf.Max(1, baseLeniency - (currentLevel - 1) / 3); // Minimum leniency of 1
         int explosions = (currentLevel >= 2 && currentLevel % 2 == 0) ? 1 : 0;
         int portals = (currentLevel >= 4 && currentLevel % 3 == 0) ? 1 : 0;
 
         Debug.Log($"Starting Level {currentLevel}: Leniency={leniency}, Width={width}, Height={height}, Nutrients={nutrients}, Explosions={explosions}, Portals={portals}");
 
-        LevelData newLevelData = LevelGenerator.instance.GenerateLevel(width, height, nutrients, explosions, portals, leniency);
+        LevelData newLevelData = null;
+        int attempts = 0;
+        const int maxAttempts = 5;
+        while (newLevelData == null && attempts < maxAttempts)
+        {
+            newLevelData = LevelGenerator.instance.GenerateLevel(width, height, nutrients, explosions, portals, leniency);
+            attempts++;
+            if (newLevelData == null)
+                Debug.LogWarning($"Level generation failed, attempt {attempts}/{maxAttempts}");
+        }
 
         if (newLevelData == null)
         {
-            Debug.LogError("FATAL: Could not generate a valid level.");
+            Debug.LogError("FATAL: Could not generate a valid level after max attempts.");
             LoadScene(0);
             return;
         }

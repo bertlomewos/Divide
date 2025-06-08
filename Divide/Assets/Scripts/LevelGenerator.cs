@@ -60,7 +60,7 @@ public class LevelGenerator : MonoBehaviour
         walls[spawnPos.x, spawnPos.y] = false;
 
         // Generate maze
-        GenerateMaze(walls, width, height);
+        GenerateMaze(walls, width, height, spawnPos);
 
         // Place nutrients in hard-to-reach areas
         nutrientCount = Mathf.Min(nutrientCount, availablePositions.Count);
@@ -73,7 +73,7 @@ public class LevelGenerator : MonoBehaviour
             availablePositions.Remove(pos);
         }
 
-        // Place explosion buffs near nutrients or in strategic locations
+        // Place explosion buffs in strategic locations
         explosionBuffCount = Mathf.Min(explosionBuffCount, availablePositions.Count);
         for (int i = 0; i < explosionBuffCount; i++)
         {
@@ -84,20 +84,39 @@ public class LevelGenerator : MonoBehaviour
             availablePositions.Remove(pos);
         }
 
-        // Place portals in distant regions
+        // Place portals in distant or disconnected regions
         portalPairCount = Mathf.Min(portalPairCount, availablePositions.Count / 2);
         for (int i = 0; i < portalPairCount; i++)
         {
             if (availablePositions.Count < 2) break;
-            Vector2Int enter = FindDistantPosition(availablePositions, walls, width, height, spawnPos);
-            if (enter.x == -1) break;
+
+            var regions = FindDisconnectedRegions(walls, width, height);
+            Vector2Int enter, exit;
+            if (regions.Count > 1)
+            {
+                var region1 = regions[Random.Range(0, regions.Count)];
+                var region2 = regions[Random.Range(0, regions.Count)];
+                while (region2 == region1 && regions.Count > 1)
+                    region2 = regions[Random.Range(0, regions.Count)];
+
+                enter = region1[Random.Range(0, region1.Count)];
+                exit = region2[Random.Range(0, region2.Count)];
+            }
+            else
+            {
+                enter = FindDistantPosition(availablePositions, walls, width, height, spawnPos);
+                if (enter.x == -1) break;
+                exit = FindDistantPosition(availablePositions, walls, width, height, enter);
+                if (exit.x == -1) break;
+            }
+
+            if (!availablePositions.Contains(enter) || !availablePositions.Contains(exit)) continue;
+
             availablePositions.Remove(enter);
-            Vector2Int exit = FindDistantPosition(availablePositions, walls, width, height, enter);
-            if (exit.x == -1) break;
+            availablePositions.Remove(exit);
             levelData.portalRegion.Add(new PortalRegion { EnterPortal = enter, ExitPortal = exit });
             walls[enter.x, enter.y] = false;
             walls[exit.x, exit.y] = false;
-            availablePositions.Remove(exit);
         }
 
         // Add walls to levelData
@@ -112,7 +131,14 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        // Verify solvability and calculate optimal moves
+        // Validate level
+        if (!ValidateLevel(levelData, walls))
+        {
+            Debug.LogError("Level validation failed.");
+            return null;
+        }
+
+        // Verify solvability
         int optimalMoves = CalculateOptimalPathCost(levelData);
         if (optimalMoves == -1)
         {
@@ -124,12 +150,11 @@ public class LevelGenerator : MonoBehaviour
         return levelData;
     }
 
-    private void GenerateMaze(bool[,] walls, int width, int height)
+    private void GenerateMaze(bool[,] walls, int width, int height, Vector2Int startPos)
     {
         Stack<Vector2Int> stack = new Stack<Vector2Int>();
-        Vector2Int start = new Vector2Int(Random.Range(0, width), Random.Range(0, height));
-        walls[start.x, start.y] = false;
-        stack.Push(start);
+        walls[startPos.x, startPos.y] = false;
+        stack.Push(startPos);
 
         int[] dx = { 0, 0, 2, -2 };
         int[] dy = { 2, -2, 0, 0 };
@@ -156,15 +181,92 @@ public class LevelGenerator : MonoBehaviour
             if (!found) stack.Pop();
         }
 
+        // Collect open positions for connectivity check
+        List<Vector2Int> openPositions = new List<Vector2Int>();
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                if (!walls[x, y])
+                    openPositions.Add(new Vector2Int(x, y));
+
         // Add extra walls for complexity
+        List<Vector2Int> addedWalls = new List<Vector2Int>();
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                if (!walls[x, y] && Random.value < 0.15f)
+                if (!walls[x, y] && Random.value < 0.1f && new Vector2Int(x, y) != startPos)
+                {
                     walls[x, y] = true;
+                    addedWalls.Add(new Vector2Int(x, y));
+                }
             }
         }
+
+        // Check connectivity; revert walls if needed
+        if (!EnsureConnectivity(walls, width, height, startPos, openPositions))
+        {
+            Debug.LogWarning("Random walls blocked connectivity. Reverting some walls.");
+            foreach (var wall in addedWalls)
+            {
+                walls[wall.x, wall.y] = false; // Revert all added walls
+            }
+        }
+
+        // Ensure at least one open tile next to spawn
+        int[] dxAdj = { 1, -1, 0, 0 };
+        int[] dyAdj = { 0, 0, 1, -1 };
+        bool hasOpenNeighbor = false;
+        for (int i = 0; i < 4; i++)
+        {
+            int nx = startPos.x + dxAdj[i], ny = startPos.y + dyAdj[i];
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height && !walls[nx, ny])
+            {
+                hasOpenNeighbor = true;
+                break;
+            }
+        }
+        if (!hasOpenNeighbor)
+        {
+            int i = Random.Range(0, 4);
+            int nx = startPos.x + dxAdj[i], ny = startPos.y + dyAdj[i];
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+                walls[nx, ny] = false;
+        }
+    }
+
+    private bool EnsureConnectivity(bool[,] walls, int width, int height, Vector2Int startPos, List<Vector2Int> keyPositions)
+    {
+        var visited = new bool[width, height];
+        var queue = new Queue<Vector2Int>();
+        queue.Enqueue(startPos);
+        visited[startPos.x, startPos.y] = true;
+        int reachableCount = 1; // Count startPos
+
+        int[] dx = { 0, 0, 1, -1 };
+        int[] dy = { 1, -1, 0, 0 };
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            for (int i = 0; i < 4; i++)
+            {
+                int nx = current.x + dx[i], ny = current.y + dy[i];
+                if (nx >= 0 && nx < width && ny >= 0 && ny < height && !visited[nx, ny] && !walls[nx, ny])
+                {
+                    visited[nx, ny] = true;
+                    queue.Enqueue(new Vector2Int(nx, ny));
+                    reachableCount++;
+                }
+            }
+        }
+
+        // Check if all key positions (open tiles) are reachable
+        foreach (var pos in keyPositions)
+        {
+            if (!visited[pos.x, pos.y])
+                return false;
+        }
+        return true;
     }
 
     private Vector2Int PopRandomPosition(List<Vector2Int> positions)
@@ -178,46 +280,229 @@ public class LevelGenerator : MonoBehaviour
 
     private Vector2Int FindHardToReachPosition(List<Vector2Int> positions, bool[,] walls, int width, int height, Vector2Int spawnPos, List<Vector2Int> nutrientCoordinates, bool hasExplosions)
     {
-        // Prefer positions far from spawn and other nutrients, with walls if explosions are present
-        int minSpawnDistance = (width >= 5 || height >= 5) ? 4 : 3;
+        int minSpawnDistance = (width >= 5 || height >= 5) ? 3 : 2;
         var candidates = positions
-            .Where(p => p != spawnPos && ManhattanDistance(p, spawnPos) > minSpawnDistance)
-            .Where(p => nutrientCoordinates.Count == 0 || nutrientCoordinates.All(n => ManhattanDistance(p, n) > 3))
+            .Where(p => p != spawnPos && ManhattanDistance(p, spawnPos) >= minSpawnDistance)
+            .Where(p => nutrientCoordinates.Count == 0 || nutrientCoordinates.All(n => ManhattanDistance(p, n) >= 2))
             .Select(p => new { Pos = p, WallCount = CountAdjacentWalls(p, walls, width, height) })
-            .Where(p => !hasExplosions || p.WallCount >= 2)
+            .Where(p => !hasExplosions || p.WallCount >= 1)
             .OrderByDescending(p => hasExplosions ? p.WallCount : ManhattanDistance(p.Pos, spawnPos))
             .Take(10)
             .ToList();
 
-        if (candidates.Count == 0) return PopRandomPosition(positions);
+        if (candidates.Count == 0)
+            return PopRandomPosition(positions);
         return candidates[Random.Range(0, candidates.Count)].Pos;
     }
 
     private Vector2Int FindStrategicPosition(List<Vector2Int> positions, bool[,] walls, int width, int height, List<Vector2Int> nutrients)
     {
-        // Place near nutrients with walls
-        var candidates = positions
-            .Where(p => nutrients.Any(n => ManhattanDistance(p, n) <= 2))
-            .Select(p => new { Pos = p, WallCount = CountAdjacentWalls(p, walls, width, height) })
-            .Where(p => p.WallCount > 0)
-            .OrderByDescending(p => p.WallCount)
-            .Take(5)
-            .ToList();
+        if (nutrients.Count == 0)
+            return PopRandomPosition(positions);
 
-        if (candidates.Count == 0) return PopRandomPosition(positions);
-        return candidates[Random.Range(0, candidates.Count)].Pos;
+        // Find walls that block paths to nutrients
+        var valuableWalls = new List<Vector2Int>();
+        int[] dx = { 0, 0, 1, -1 };
+        int[] dy = { 1, -1, 0, 0 };
+        foreach (var nutrient in nutrients)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                int nx = nutrient.x + dx[i], ny = nutrient.y + dy[i];
+                if (nx >= 0 && nx < width && ny >= 0 && ny < height && walls[nx, ny])
+                    valuableWalls.Add(new Vector2Int(nx, ny));
+            }
+        }
+
+        // Find positions adjacent to valuable walls
+        var candidates = new List<(Vector2Int Pos, int WallCount)>();
+        foreach (var pos in positions)
+        {
+            if (nutrients.Any(n => ManhattanDistance(pos, n) <= 1))
+                continue;
+
+            int wallCount = CountAdjacentWalls(pos, walls, width, height);
+            if (wallCount == 0)
+                continue;
+
+            bool adjacentToValuableWall = false;
+            foreach (var wall in valuableWalls)
+            {
+                if (ManhattanDistance(pos, wall) == 1)
+                {
+                    adjacentToValuableWall = true;
+                    break;
+                }
+            }
+
+            if (adjacentToValuableWall)
+                candidates.Add((pos, wallCount));
+        }
+
+        // Sort by wall count (descending) and take top 5
+        candidates.Sort((a, b) => b.WallCount.CompareTo(a.WallCount));
+        if (candidates.Count > 5)
+            candidates.RemoveRange(5, candidates.Count - 5);
+
+        // Extract positions from candidates
+        var candidatePositions = candidates.Select(c => c.Pos).ToList();
+
+        if (candidatePositions.Count == 0)
+        {
+            // Fallback: positions with adjacent walls, not too close to nutrients
+            candidates.Clear();
+            foreach (var pos in positions)
+            {
+                if (nutrients.Any(n => ManhattanDistance(pos, n) <= 1))
+                    continue;
+
+                int wallCount = CountAdjacentWalls(pos, walls, width, height);
+                if (wallCount > 0)
+                    candidates.Add((pos, wallCount));
+            }
+
+            // Sort by wall count (descending) and take top 5
+            candidates.Sort((a, b) => b.WallCount.CompareTo(a.WallCount));
+            if (candidates.Count > 5)
+                candidates.RemoveRange(5, candidates.Count - 5);
+
+            candidatePositions = candidates.Select(c => c.Pos).ToList();
+        }
+
+        if (candidatePositions.Count == 0)
+            return PopRandomPosition(positions);
+
+        return candidatePositions[Random.Range(0, candidatePositions.Count)];
     }
 
     private Vector2Int FindDistantPosition(List<Vector2Int> positions, bool[,] walls, int width, int height, Vector2Int referencePos)
     {
-        // Place in distant regions
         var candidates = positions
             .OrderByDescending(p => ManhattanDistance(p, referencePos))
             .Take(5)
             .ToList();
 
-        if (candidates.Count == 0) return PopRandomPosition(positions);
+        if (candidates.Count == 0)
+            return PopRandomPosition(positions);
         return candidates[Random.Range(0, candidates.Count)];
+    }
+
+    private List<List<Vector2Int>> FindDisconnectedRegions(bool[,] walls, int width, int height)
+    {
+        var regions = new List<List<Vector2Int>>();
+        var visited = new bool[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (!walls[x, y] && !visited[x, y])
+                {
+                    var region = new List<Vector2Int>();
+                    var queue = new Queue<Vector2Int>();
+                    queue.Enqueue(new Vector2Int(x, y));
+                    visited[x, y] = true;
+                    region.Add(new Vector2Int(x, y));
+
+                    int[] dx = { 0, 0, 1, -1 };
+                    int[] dy = { 1, -1, 0, 0 };
+                    while (queue.Count > 0)
+                    {
+                        var current = queue.Dequeue();
+                        for (int i = 0; i < 4; i++)
+                        {
+                            int nx = current.x + dx[i], ny = current.y + dy[i];
+                            if (nx >= 0 && nx < width && ny >= 0 && ny < height && !walls[nx, ny] && !visited[nx, ny])
+                            {
+                                visited[nx, ny] = true;
+                                queue.Enqueue(new Vector2Int(nx, ny));
+                                region.Add(new Vector2Int(nx, ny));
+                            }
+                        }
+                    }
+                    regions.Add(region);
+                }
+            }
+        }
+        return regions;
+    }
+
+    private bool ValidateLevel(LevelData levelData, bool[,] walls)
+    {
+        // Check spawn point
+        if (levelData.SpawnX < 0 || levelData.SpawnX >= levelData.width || levelData.SpawnY < 0 || levelData.SpawnY >= levelData.height)
+        {
+            Debug.LogError("Invalid spawn point coordinates.");
+            return false;
+        }
+        if (walls[levelData.SpawnX, levelData.SpawnY])
+        {
+            Debug.LogError("Spawn point is on a wall.");
+            return false;
+        }
+
+        // Check nutrients
+        foreach (var nutrient in levelData.nutrientCoordinates)
+        {
+            if (nutrient.x < 0 || nutrient.x >= levelData.width || nutrient.y < 0 || nutrient.y >= levelData.height)
+            {
+                Debug.LogError($"Invalid nutrient coordinates: ({nutrient.x}, {nutrient.y})");
+                return false;
+            }
+            if (walls[nutrient.x, nutrient.y])
+            {
+                Debug.LogError($"Nutrient at ({nutrient.x}, {nutrient.y}) is on a wall.");
+                return false;
+            }
+            if (nutrient == new Vector2Int(levelData.SpawnX, levelData.SpawnY))
+            {
+                Debug.LogError("Nutrient placed on spawn point.");
+                return false;
+            }
+        }
+
+        // Check explosion buffs
+        foreach (var explosion in levelData.explosionCoordinates)
+        {
+            if (explosion.x < 0 || explosion.x >= levelData.width || explosion.y < 0 || explosion.y >= levelData.height)
+            {
+                Debug.LogError($"Invalid explosion coordinates: ({explosion.x}, {explosion.y})");
+                return false;
+            }
+            if (walls[explosion.x, explosion.y])
+            {
+                Debug.LogError($"Explosion at ({explosion.x}, {explosion.y}) is on a wall.");
+                return false;
+            }
+            if (explosion == new Vector2Int(levelData.SpawnX, levelData.SpawnY))
+            {
+                Debug.LogError("Explosion placed on spawn point.");
+                return false;
+            }
+        }
+
+        // Check portals
+        foreach (var portal in levelData.portalRegion)
+        {
+            if (portal.EnterPortal.x < 0 || portal.EnterPortal.x >= levelData.width || portal.EnterPortal.y < 0 || portal.EnterPortal.y >= levelData.height ||
+                portal.ExitPortal.x < 0 || portal.ExitPortal.x >= levelData.width || portal.ExitPortal.y < 0 || portal.ExitPortal.y >= levelData.height)
+            {
+                Debug.LogError("Invalid portal coordinates.");
+                return false;
+            }
+            if (walls[portal.EnterPortal.x, portal.EnterPortal.y] || walls[portal.ExitPortal.x, portal.ExitPortal.y])
+            {
+                Debug.LogError("Portal placed on a wall.");
+                return false;
+            }
+            if (portal.EnterPortal == new Vector2Int(levelData.SpawnX, levelData.SpawnY) || portal.ExitPortal == new Vector2Int(levelData.SpawnX, levelData.SpawnY))
+            {
+                Debug.LogError("Portal placed on spawn point.");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private int CountAdjacentWalls(Vector2Int pos, bool[,] walls, int width, int height)
@@ -335,8 +620,9 @@ public class LevelGenerator : MonoBehaviour
         {
             if ((visitedMask & (1 << nextNodeIndex)) == 0)
             {
-                int newCost = costMatrix[currentNodeIndex, nextNodeIndex] +
-                              FindMinMoves(nextNodeIndex, visitedMask | (1 << nextNodeIndex), points, costMatrix, memo);
+                int pathCost = costMatrix[currentNodeIndex, nextNodeIndex];
+                if (pathCost >= minCost) continue; // Prune if single step exceeds best known cost
+                int newCost = pathCost + FindMinMoves(nextNodeIndex, visitedMask | (1 << nextNodeIndex), points, costMatrix, memo);
                 if (newCost < minCost)
                     minCost = newCost;
             }
