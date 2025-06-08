@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 5326634882968707425, guid: 9a76306124ef5294687b9c25415041b7, type: 3}
-  m_Color: {r: 0.09019608, g: 0.4392157, b: 0.5568628, a: 1}
+  m_Color: {r: 0.3475881, g: 0.62951046, b: 0.6886792, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
   _baseColor: {fileID: 7983651796150731748, guid: aa36453a849c43f42ba9532e5f0aca74, type: 3}
   _offsetColor: {fileID: 7983651796150731748, guid: aa36453a849c43f42ba9532e5f0aca74, type: 3}
   _wallColor: {fileID: 5326634882968707425, guid: 9a76306124ef5294687b9c25415041b7, type: 3}
-  _PortalColor: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _PortalColor: {fileID: -8633188814385320664, guid: af817a6fb8d29cb408e5f714c447e68c, type: 3}
   _renderer: {fileID: 2257556721308175723}
   _highlight: {fileID: 6635541321866339634}
   isWalkable: 1

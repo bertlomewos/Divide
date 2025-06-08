@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Nutrient _nutrientPrefab;
     [SerializeField] private ExplosionBuff _explosionPrefab;
     
-    [SerializeField] private Transform _cam;
+    [SerializeField] private Camera _cam;
     [SerializeField] private Transform _Background;
     public int NutrientCount { get; private set; }
     public int ExplosionBuffCount { get; private set; }
@@ -37,7 +37,11 @@ public class GridManager : MonoBehaviour
         }
     }
 
-   
+    private void Start()
+    {
+        BackGround();
+    }
+
     public void BuildLevel(LevelData levelData)
     {
         this.currentLevelData = levelData;
@@ -83,14 +87,14 @@ public class GridManager : MonoBehaviour
         }
         if (_cam != null)
         {
-            _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10f);
+            _cam.gameObject.transform.position   = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10f);
         }
         if (_Background != null)
         {
-            _Background.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10f);
+            _Background.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, 0f);
         }
 
-        LoadLevelLayout();
+        LoadLevelLayout();  
     }
 
     private void LoadLevelLayout()
@@ -175,5 +179,27 @@ public class GridManager : MonoBehaviour
             }
         }
         return neighbours;
+    }
+
+
+    public void BackGround()
+    {
+        float width = Screen.width;
+        float height = Screen.height;
+        float DeviceRatio = width / height;
+
+        _cam.aspect = DeviceRatio;
+
+        float camHeight = 100.0f * _cam.orthographicSize * 2.0f;
+        float camWidth = camHeight * DeviceRatio;
+
+        SpriteRenderer backgroundRenderer = _Background.GetComponent<SpriteRenderer>();
+        float HightImag = backgroundRenderer.sprite.rect.height;
+        float widthImg = backgroundRenderer.sprite.rect.width;
+
+        float scaleX = camWidth / widthImg;
+        float scaleY = camHeight / HightImag;
+
+        _Background.localScale = new Vector3(scaleX, scaleY, 1f);
     }
 }

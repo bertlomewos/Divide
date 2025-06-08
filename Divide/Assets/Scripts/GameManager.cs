@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public GameObject _youLose;
     public GameObject _youWin;
 
+
     private void Awake()
     {
         if (instance == null)
@@ -53,7 +54,7 @@ public class GameManager : MonoBehaviour
     {
         if (levelProgression.Count > 0)
         {
-            StartLevel(currentLevelIndex);
+            //StartLevel(currentLevelIndex);
         }
         else
         {
@@ -65,7 +66,6 @@ public class GameManager : MonoBehaviour
     {
         if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
         {
-            
             LoadScene(0);
         }
     }
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
     }
     */
 
-    void StartLevel(int levelIndex)
+    public void StartLevel(int levelIndex)
     {
         GridManager.instance.BuildLevel(levelProgression[levelIndex]);
 
@@ -262,4 +262,6 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(Index);
     }
+
+
 }
