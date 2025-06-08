@@ -5,12 +5,12 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
-public class GameManager : MonoBehaviour
+public class GameManagerInfinite : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManagerInfinite instance;
 
     [Header("Game Configuration")]
-    [SerializeField] private Bacteria _bacteriaPrefab;
+    [SerializeField] private BacteriaInfinite _bacteriaPrefab;
 
     [Header("Level 1 Generation Settings")]
     [SerializeField] private int baseWidth = 3;
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     private int _petriDishCapacity;
     private int _totalNutrients;
     private int _currentBacteriaCount = 0;
-    [SerializeField] private List<Bacteria> _bacteriaColony = new List<Bacteria>();
+    [SerializeField] private List<BacteriaInfinite> _bacteriaColony = new List<BacteriaInfinite>();
     private int _nutrientsCollected = 0;
     private bool isExplosionBuffActive = false;
 
@@ -87,12 +87,12 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Starting Level {currentLevel}: Leniency={leniency}, Width={width}, Height={height}, Nutrients={nutrients}, Explosions={explosions}, Portals={portals}");
 
-        LevelData newLevelData = null;
+        LevelDataInfinite newLevelData = null;
         int attempts = 0;
         const int maxAttempts = 5;
         while (newLevelData == null && attempts < maxAttempts)
         {
-            newLevelData = LevelGenerator.instance.GenerateLevel(width, height, nutrients, explosions, portals, leniency);
+            newLevelData = LevelGeneratorInfinite.instance.GenerateLevel(width, height, nutrients, explosions, portals, leniency);
             attempts++;
             if (newLevelData == null)
                 Debug.LogWarning($"Level generation failed, attempt {attempts}/{maxAttempts}");
@@ -105,13 +105,13 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        GridManager.instance.BuildLevel(newLevelData);
+        GridManagerInfinite.instance.BuildLevel(newLevelData);
 
         _totalNutrients = newLevelData.nutrientCoordinates.Count;
         _petriDishCapacity = newLevelData.Capacity;
 
         Debug.Log($"Spawn point set to: ({newLevelData.SpawnX}, {newLevelData.SpawnY})");
-        Tile spawnTile = GridManager.instance.GetTileAtPosition(new Vector2Int(newLevelData.SpawnX, newLevelData.SpawnY));
+        TileInfinite spawnTile = GridManagerInfinite.instance.GetTileAtPosition(new Vector2Int(newLevelData.SpawnX, newLevelData.SpawnY));
         if (spawnTile == null)
         {
             Debug.LogError($"Spawn tile at ({newLevelData.SpawnX}, {newLevelData.SpawnY}) is null! Aborting spawn.");
@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    private void CheckForNutrient(Tile tile)
+    private void CheckForNutrient(TileInfinite tile)
     {
         if (tile.OccupyingNutrient != null)
         {
@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
         LoadNextLevel();
     }
 
-    private void SpawnBacteria(Tile tile, Bacteria parentBacteria = null)
+    private void SpawnBacteria(TileInfinite tile, BacteriaInfinite parentBacteria = null)
     {
         if (tile == null)
         {
@@ -242,7 +242,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Bacteria spawned at ({tile.x}, {tile.y}). Count: {_currentBacteriaCount}/{_petriDishCapacity}. GameObject: {newBacteria.name}");
     }
 
-    public void OnTileClicked(Tile clickedTile)
+    public void OnTileClicked(TileInfinite clickedTile)
     {
         if (isExplosionBuffActive)
         {
@@ -264,15 +264,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnPortalTileClicked(Tile clickedPortalTile)
+    public void OnPortalTileClicked(TileInfinite clickedPortalTile)
     {
-        Bacteria adjacentBacteria = _bacteriaColony.FirstOrDefault(b => IsAdjacent(clickedPortalTile, b.currentTile));
+        BacteriaInfinite adjacentBacteria = _bacteriaColony.FirstOrDefault(b => IsAdjacent(clickedPortalTile, b.currentTile));
         if (adjacentBacteria != null)
         {
             Vector2 enterPos = new Vector2(clickedPortalTile.x, clickedPortalTile.y);
             Vector2 exitPos = Vector2.zero;
             bool foundPortal = false;
-            foreach (var region in GridManager.instance.currentLevelData.portalRegion)
+            foreach (var region in GridManagerInfinite.instance.currentLevelData.portalRegion)
             {
                 if (region.EnterPortal == enterPos)
                 {
@@ -289,7 +289,7 @@ public class GameManager : MonoBehaviour
             }
             if (foundPortal)
             {
-                Tile exitTile = GridManager.instance.GetTileAtPosition(exitPos);
+                TileInfinite exitTile = GridManagerInfinite.instance.GetTileAtPosition(exitPos);
                 if (exitTile != null && exitTile.isWalkable)
                 {
                     SpawnBacteria(exitTile, adjacentBacteria);
@@ -302,7 +302,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void CheckForExplosion(Tile tile)
+    private void CheckForExplosion(TileInfinite tile)
     {
         if (tile.OccupyingExplosion != null)
         {
@@ -312,16 +312,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Explode(Tile centerTile)
+    private void Explode(TileInfinite centerTile)
     {
-        List<Tile> neighbors = GridManager.instance.GetNeighborTiles(centerTile, true);
-        foreach (Tile neighbor in neighbors)
+        List<TileInfinite> neighbors = GridManagerInfinite.instance.GetNeighborTiles(centerTile, true);
+        foreach (TileInfinite neighbor in neighbors)
         {
             neighbor.ClearWall();
         }
     }
 
-    private bool IsAdjacent(Tile tile1, Tile tile2)
+    private bool IsAdjacent(TileInfinite tile1, TileInfinite tile2)
     {
         return (Mathf.Abs(tile1.x - tile2.x) + Mathf.Abs(tile1.y - tile2.y)) == 1;
     }

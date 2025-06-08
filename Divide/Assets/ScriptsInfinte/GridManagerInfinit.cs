@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class GridManager : MonoBehaviour
+public class GridManagerInfinite : MonoBehaviour
 {
     [Header("Object References")]
     [SerializeField] private GameObject petriDishObject;
-    [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private Nutrient _nutrientPrefab;
-    [SerializeField] private ExplosionBuff _explosionPrefab;
+    [SerializeField] private TileInfinite _tilePrefab;
+    [SerializeField] private NutrientInfinite _nutrientPrefab;
+    [SerializeField] private ExplosionBuffInfinite _explosionPrefab;
     [SerializeField] private Transform _cam;
 
     [Header("Level Properties")]
@@ -20,9 +20,9 @@ public class GridManager : MonoBehaviour
     public int StartY { get; private set; }
     public int petriDishCap { get; private set; }
 
-    private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
-    public LevelData currentLevelData;
-    public static GridManager instance;
+    private Dictionary<Vector2, TileInfinite> _tiles = new Dictionary<Vector2, TileInfinite>();
+    public LevelDataInfinite currentLevelData;
+    public static GridManagerInfinite instance;
 
     private void Awake()
     {
@@ -37,7 +37,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void BuildLevel(LevelData levelData)
+    public void BuildLevel(LevelDataInfinite levelData)
     {
         this.currentLevelData = levelData;
         ClearGrid();
@@ -58,7 +58,7 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
 
         // Verify spawn tile after generation
-        Tile spawnTile = GetTileAtPosition(new Vector2(StartX, StartY));
+        TileInfinite spawnTile = GetTileAtPosition(new Vector2(StartX, StartY));
         if (spawnTile == null)
         {
             Debug.LogError($"Spawn tile at ({StartX}, {StartY}) is null after grid generation!");
@@ -122,7 +122,7 @@ public class GridManager : MonoBehaviour
                         Debug.Log($"Skipping wall placement at spawn point ({x}, {y})");
                         continue;
                     }
-                    Tile tile = GetTileAtPosition(new Vector2(x, y));
+                    TileInfinite tile = GetTileAtPosition(new Vector2(x, y));
                     if (tile != null)
                     {
                         tile.SetAsWall();
@@ -133,7 +133,7 @@ public class GridManager : MonoBehaviour
 
         foreach (var nutrientCoord in currentLevelData.nutrientCoordinates)
         {
-            Tile tile = GetTileAtPosition(nutrientCoord);
+            TileInfinite tile = GetTileAtPosition(nutrientCoord);
             if (tile != null && tile.isWalkable)
             {
                 var nutrient = Instantiate(_nutrientPrefab, tile.transform.position, Quaternion.identity, tile.transform);
@@ -143,7 +143,7 @@ public class GridManager : MonoBehaviour
 
         foreach (var explosionCoord in currentLevelData.explosionCoordinates)
         {
-            Tile tile = GetTileAtPosition(explosionCoord);
+            TileInfinite tile = GetTileAtPosition(explosionCoord);
             if (tile != null && tile.isWalkable)
             {
                 var explosion = Instantiate(_explosionPrefab, tile.transform.position, Quaternion.identity, tile.transform);
@@ -153,8 +153,8 @@ public class GridManager : MonoBehaviour
 
         foreach (var portalRegion in currentLevelData.portalRegion)
         {
-            Tile enterTile = GetTileAtPosition(portalRegion.EnterPortal);
-            Tile exitTile = GetTileAtPosition(portalRegion.ExitPortal);
+            TileInfinite enterTile = GetTileAtPosition(portalRegion.EnterPortal);
+            TileInfinite exitTile = GetTileAtPosition(portalRegion.ExitPortal);
             if (enterTile != null && exitTile != null)
             {
                 enterTile.SetAsPortal();
@@ -192,7 +192,7 @@ public class GridManager : MonoBehaviour
         petriDishObject.transform.localScale = new Vector3(scale, scale, 1);
     }
 
-    public Tile GetTileAtPosition(Vector2 pos)
+    public TileInfinite GetTileAtPosition(Vector2 pos)
     {
         if (_tiles.TryGetValue(pos, out var tile))
         {
@@ -201,9 +201,9 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    public List<Tile> GetNeighborTiles(Tile currentTile, bool includeDiagonals)
+    public List<TileInfinite> GetNeighborTiles(TileInfinite currentTile, bool includeDiagonals)
     {
-        List<Tile> neighbours = new List<Tile>();
+        List<TileInfinite> neighbours = new List<TileInfinite>();
 
         int[] x_directions = { 0, 0, 1, -1 };
         int[] y_directions = { 1, -1, 0, 0 };
@@ -218,7 +218,7 @@ public class GridManager : MonoBehaviour
         {
             Vector2Int neighbourPos = new Vector2Int(currentTile.x + x_directions[i], currentTile.y + y_directions[i]);
 
-            Tile neighbour = GetTileAtPosition(neighbourPos);
+            TileInfinite neighbour = GetTileAtPosition(neighbourPos);
             if (neighbour != null)
             {
                 neighbours.Add(neighbour);
@@ -227,7 +227,7 @@ public class GridManager : MonoBehaviour
         return neighbours;
     }
 
-    public Tile FindWalkableTile()
+    public TileInfinite FindWalkableTile()
     {
         return _tiles.Values.FirstOrDefault(t => t.isWalkable);
     }

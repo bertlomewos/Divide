@@ -151,7 +151,7 @@ MonoBehaviour:
   petriDishObject: {fileID: 1592169864}
   _tilePrefab: {fileID: 8894702599201678028, guid: ddbdeb7f92b230044b3ee58f269dd17e, type: 3}
   _nutrientPrefab: {fileID: 6177658715835494662, guid: 46f121db990e5c74f980b0ccf72280d4, type: 3}
-  _explosionPrefab: {fileID: 5103299356832983180, guid: 792d7aa45a828494fa74058bf9e1800b, type: 3}
+  _explosionPrefab: {fileID: 2689209916918953772, guid: 792d7aa45a828494fa74058bf9e1800b, type: 3}
   _cam: {fileID: 519420032}
   currentLevelData: {fileID: 0}
 --- !u!4 &63660043
@@ -671,7 +671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8df2e446e1fed4e9f2b60d463cd72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
+  _bacteriaPrefab: {fileID: 1306093032364904404, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
   baseWidth: 3
   baseHeight: 3
   baseNutrients: 1
@@ -1300,7 +1300,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1592169864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd27e73fcecc5af4db2de898014fe2c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d7c88875a9916347a1c5827bb508f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

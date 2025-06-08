@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class LevelGenerator : MonoBehaviour
+public class LevelGeneratorInfinite : MonoBehaviour
 {
-    public static LevelGenerator instance;
+    public static LevelGeneratorInfinite instance;
 
     private void Awake()
     {
@@ -18,9 +18,9 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    public LevelData GenerateLevel(int width, int height, int nutrientCount, int explosionBuffCount, int portalPairCount, int leniency)
+    public LevelDataInfinite GenerateLevel(int width, int height, int nutrientCount, int explosionBuffCount, int portalPairCount, int leniency)
     {
-        LevelData levelData = CreatePuzzleLevel(width, height, nutrientCount, explosionBuffCount, portalPairCount, leniency);
+        LevelDataInfinite levelData = CreatePuzzleLevel(width, height, nutrientCount, explosionBuffCount, portalPairCount, leniency);
 
         if (levelData == null)
         {
@@ -32,15 +32,15 @@ public class LevelGenerator : MonoBehaviour
         return levelData;
     }
 
-    private LevelData CreatePuzzleLevel(int width, int height, int nutrientCount, int explosionBuffCount, int portalPairCount, int leniency)
+    private LevelDataInfinite CreatePuzzleLevel(int width, int height, int nutrientCount, int explosionBuffCount, int portalPairCount, int leniency)
     {
-        var levelData = ScriptableObject.CreateInstance<LevelData>();
+        var levelData = ScriptableObject.CreateInstance<LevelDataInfinite>();
         levelData.width = width;
         levelData.height = height;
         levelData.nutrientCoordinates = new List<Vector2Int>();
         levelData.explosionCoordinates = new List<Vector2Int>();
-        levelData.portalRegion = new List<PortalRegion>();
-        levelData.wallRegions = new List<WallRegion>();
+        levelData.portalRegion = new List<PortalRegionInfinite>();
+        levelData.wallRegions = new List<WallRegionInfinite>();
 
         bool[,] walls = new bool[width, height];
         for (int x = 0; x < width; x++)
@@ -114,7 +114,7 @@ public class LevelGenerator : MonoBehaviour
 
             availablePositions.Remove(enter);
             availablePositions.Remove(exit);
-            levelData.portalRegion.Add(new PortalRegion { EnterPortal = enter, ExitPortal = exit });
+            levelData.portalRegion.Add(new PortalRegionInfinite { EnterPortal = enter, ExitPortal = exit });
             walls[enter.x, enter.y] = false;
             walls[exit.x, exit.y] = false;
         }
@@ -126,7 +126,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 if (walls[x, y])
                 {
-                    levelData.wallRegions.Add(new WallRegion { startCoordinate = new Vector2Int(x, y), endCoordinate = new Vector2Int(x, y) });
+                    levelData.wallRegions.Add(new WallRegionInfinite { startCoordinate = new Vector2Int(x, y), endCoordinate = new Vector2Int(x, y) });
                 }
             }
         }
@@ -427,7 +427,7 @@ public class LevelGenerator : MonoBehaviour
         return regions;
     }
 
-    private bool ValidateLevel(LevelData levelData, bool[,] walls)
+    private bool ValidateLevel(LevelDataInfinite levelData, bool[,] walls)
     {
         // Check spawn point
         if (levelData.SpawnX < 0 || levelData.SpawnX >= levelData.width || levelData.SpawnY < 0 || levelData.SpawnY >= levelData.height)
@@ -524,7 +524,7 @@ public class LevelGenerator : MonoBehaviour
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
     }
 
-    private int CalculateOptimalPathCost(LevelData levelData)
+    private int CalculateOptimalPathCost(LevelDataInfinite levelData)
     {
         if (levelData.nutrientCoordinates.Count == 0) return 0;
 
@@ -559,7 +559,7 @@ public class LevelGenerator : MonoBehaviour
         return FindMinMoves(0, 1 << 0, pointsOfInterest, costMatrix, memo);
     }
 
-    private int CalculateShortestPath(Vector2Int start, Vector2Int end, LevelData data, HashSet<Vector2Int> walls, Dictionary<Vector2Int, Vector2Int> portals, HashSet<Vector2Int> explosions)
+    private int CalculateShortestPath(Vector2Int start, Vector2Int end, LevelDataInfinite data, HashSet<Vector2Int> walls, Dictionary<Vector2Int, Vector2Int> portals, HashSet<Vector2Int> explosions)
     {
         if (start == end) return 0;
 

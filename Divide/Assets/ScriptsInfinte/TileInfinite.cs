@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class TileInfinite : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public int x, y;
     [SerializeField] private Sprite _baseColor, _offsetColor, _wallColor, _PortalColor;
@@ -12,8 +12,8 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public bool isPortal = false;
     private bool isOccupiedByBacteria = false;
     public bool isOffset = false;
-    public Nutrient OccupyingNutrient { get; private set; }
-    public ExplosionBuff OccupyingExplosion { get; private set; }
+    public NutrientInfinite OccupyingNutrient { get; private set; }
+    public ExplosionBuffInfinite OccupyingExplosion { get; private set; }
 
     public void Init(bool isOffset)
     {
@@ -34,11 +34,11 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     {
         if (isWalkable && !isPortal)
         {
-            GameManager.instance.OnTileClicked(this);
+            GameManagerInfinite.instance.OnTileClicked(this);
         }
         if (isWalkable && isPortal)
         {
-            GameManager.instance.OnPortalTileClicked(this);
+            GameManagerInfinite.instance.OnPortalTileClicked(this);
         }
         Debug.Log(x + "," + y);
     }
@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    public void SetNutrient(Nutrient nutrient)
+    public void SetNutrient(NutrientInfinite nutrient)
     {
         if (nutrient != null)
         {
@@ -88,7 +88,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    public void SetExplosion(ExplosionBuff explosion)
+    public void SetExplosion(ExplosionBuffInfinite explosion)
     {
         if (explosion != null)
         {

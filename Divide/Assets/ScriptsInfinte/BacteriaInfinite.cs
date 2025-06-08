@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class Bacteria : MonoBehaviour
+public class BacteriaInfinite : MonoBehaviour
 {
-    public Tile currentTile;
+    public TileInfinite currentTile;
     private Vector3 originalScale;
     private int generation = 0;
     private const float scaleReductionPerGen = 0.85f; // Scale factor per generation
@@ -52,7 +52,7 @@ public class Bacteria : MonoBehaviour
         transform.localScale = currentScale;
     }
 
-    public void MoveToTile(Tile targetTile, Bacteria parent = null)
+    public void MoveToTile(TileInfinite targetTile, BacteriaInfinite parent = null)
     {
         currentTile = targetTile;
 
@@ -65,7 +65,7 @@ public class Bacteria : MonoBehaviour
         StartCoroutine(DivideAndGrowAnimation(targetTile.transform.position, parent));
     }
 
-    IEnumerator DivideAndGrowAnimation(Vector3 targetPosition, Bacteria parent)
+    IEnumerator DivideAndGrowAnimation(Vector3 targetPosition, BacteriaInfinite parent)
     {
         float duration = 0.4f;
         float timer = 0f;

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1212611419943811828}
   - component: {fileID: 5935654870024618389}
-  - component: {fileID: 5103299356832983180}
+  - component: {fileID: 2689209916918953772}
   m_Layer: 0
   m_Name: explosionbuff
   m_TagString: Untagged
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5103299356832983180
+--- !u!114 &2689209916918953772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,6 +97,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4863652233439764374}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0057b232e1bba5743899a0c561b5c3d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 19745c0ff60bdfb47925418aed40ea99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
