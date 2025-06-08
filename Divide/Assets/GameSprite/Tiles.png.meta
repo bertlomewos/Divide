@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 94711492770ce6c4e908e91090818cb7
+guid: a36d99d762e27fa41981897e63db4f8b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -388999789685119266
-    second: Portal Tile exit_0
+      213: 7223950226953391895
+    second: Tiles_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 400
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Portal Tile exit_0
+      name: Tiles_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 106
-        height: 106
+        width: 400
+        height: 400
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ed6ed1690cef99af0800000000000000
-      internalID: -388999789685119266
+      spriteID: 71fc8a01570a04460800000000000000
+      internalID: 7223950226953391895
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Portal Tile exit_0: -388999789685119266
+      Tiles_0: 7223950226953391895
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

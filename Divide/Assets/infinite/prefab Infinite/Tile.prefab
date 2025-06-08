@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3583015574407174659}
   - component: {fileID: 2257556721308175723}
-  - component: {fileID: 8894702599201678028}
   - component: {fileID: 1903251366274909730}
+  - component: {fileID: 2652134413398139007}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -90,29 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8894702599201678028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4735242509554854280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f162c2d99de59e0459bf1b9ef22fcfe0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  x: 0
-  y: 0
-  _baseColor: {fileID: 7223950226953391895, guid: a36d99d762e27fa41981897e63db4f8b, type: 3}
-  _offsetColor: {fileID: 7223950226953391895, guid: a36d99d762e27fa41981897e63db4f8b, type: 3}
-  _wallColor: {fileID: -3218248262026354849, guid: 3f1bfcf292d799f4bb5ab4a0ce9e9327, type: 3}
-  _PortalColor: {fileID: -8633188814385320664, guid: af817a6fb8d29cb408e5f714c447e68c, type: 3}
-  _renderer: {fileID: 2257556721308175723}
-  _highlight: {fileID: 6635541321866339634}
-  isWalkable: 1
-  isPortal: 0
-  isOffset: 0
 --- !u!61 &1903251366274909730
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -151,7 +128,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4, y: 4}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -159,6 +136,29 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2652134413398139007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4735242509554854280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25aa9dba71172734985b07b0271e5046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+  y: 0
+  _baseColor: {fileID: 7223950226953391895, guid: a36d99d762e27fa41981897e63db4f8b, type: 3}
+  _offsetColor: {fileID: 7223950226953391895, guid: a36d99d762e27fa41981897e63db4f8b, type: 3}
+  _wallColor: {fileID: -3218248262026354849, guid: 3f1bfcf292d799f4bb5ab4a0ce9e9327, type: 3}
+  _PortalColor: {fileID: -388999789685119266, guid: 94711492770ce6c4e908e91090818cb7, type: 3}
+  _renderer: {fileID: 2257556721308175723}
+  _highlight: {fileID: 6635541321866339634}
+  isWalkable: 1
+  isPortal: 0
+  isOffset: 0
 --- !u!1 &6635541321866339634
 GameObject:
   m_ObjectHideFlags: 0
