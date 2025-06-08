@@ -152,6 +152,7 @@ MonoBehaviour:
   _nutrientPrefab: {fileID: 6177658715835494662, guid: 46f121db990e5c74f980b0ccf72280d4, type: 3}
   _explosionPrefab: {fileID: 5103299356832983180, guid: 792d7aa45a828494fa74058bf9e1800b, type: 3}
   _cam: {fileID: 519420032}
+  _Background: {fileID: 1592169866}
   currentLevelData: {fileID: 0}
 --- !u!4 &63660043
 Transform:
@@ -672,8 +673,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
   levelProgression:
-  - {fileID: 11400000, guid: 3de7162c6f1338a45a78cb177b004b21, type: 2}
-  delayBeforeNextLevel: 2
+  - {fileID: 11400000, guid: 1e7d5b404f412d24987d0f91e6908191, type: 2}
+  delayBeforeNextLevel: 0.5
   _bacteriaColony: []
   _youLose: {fileID: 1471600827}
   _youWin: {fileID: 1414682649}
@@ -1216,7 +1217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1592169865
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1281,7 +1282,7 @@ Transform:
   m_GameObject: {fileID: 1592169864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

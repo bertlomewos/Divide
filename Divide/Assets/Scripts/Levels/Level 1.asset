@@ -18,9 +18,9 @@ MonoBehaviour:
   SpawnY: 1
   Capacity: 6
   wallRegions: []
+  portalRegion: []
   nutrientCoordinates:
   - {x: 2, y: 2}
   - {x: 0, y: 2}
   - {x: 2, y: 0}
-  explosionCoordinates:
-  - {x: 0, y: 0}
+  explosionCoordinates: []

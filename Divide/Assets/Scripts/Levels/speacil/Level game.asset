@@ -10,28 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9852827fc5f46f43b4ef7dc0b955862, type: 3}
-  m_Name: Level3
+  m_Name: Level game
   m_EditorClassIdentifier: 
   width: 6
   height: 6
-  SpawnX: 3
-  SpawnY: 2
-  Capacity: 20
+  SpawnX: 0
+  SpawnY: 0
+  Capacity: 100
   wallRegions:
-  - startCoordinate: {x: 1, y: 1}
-    endCoordinate: {x: 1, y: 4}
-  - startCoordinate: {x: 1, y: 1}
-    endCoordinate: {x: 4, y: 1}
-  - startCoordinate: {x: 4, y: 1}
-    endCoordinate: {x: 4, y: 3}
+  - startCoordinate: {x: 0, y: 1}
+    endCoordinate: {x: 1, y: 2}
+  - startCoordinate: {x: 3, y: 1}
+    endCoordinate: {x: 4, y: 5}
   - startCoordinate: {x: 3, y: 3}
-    endCoordinate: {x: 3, y: 3}
-  - startCoordinate: {x: 3, y: 4}
-    endCoordinate: {x: 4, y: 4}
-  portalRegion: []
+    endCoordinate: {x: 5, y: 3}
+  - startCoordinate: {x: 4, y: 1}
+    endCoordinate: {x: 4, y: 2}
+  - startCoordinate: {x: 4, y: 1}
+    endCoordinate: {x: 5, y: 1}
+  portalRegion:
+  - EnterPortal: {x: 0, y: 3}
+    ExitPortal: {x: 4, y: 5}
   nutrientCoordinates:
-  - {x: 0, y: 0}
+  - {x: 2, y: 1}
+  - {x: 5, y: 2}
+  explosionCoordinates:
   - {x: 5, y: 5}
-  - {x: 0, y: 5}
-  - {x: 5, y: 0}
-  explosionCoordinates: []

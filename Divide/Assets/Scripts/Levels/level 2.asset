@@ -16,15 +16,16 @@ MonoBehaviour:
   height: 5
   SpawnX: 2
   SpawnY: 2
-  Capacity: 9
+  Capacity: 13
   wallRegions:
   - startCoordinate: {x: 1, y: 1}
-    endCoordinate: {x: 1, y: 1}
+    endCoordinate: {x: 1, y: 3}
   - startCoordinate: {x: 2, y: 3}
     endCoordinate: {x: 2, y: 3}
-  - startCoordinate: {x: 4, y: 2}
+  - startCoordinate: {x: 3, y: 2}
     endCoordinate: {x: 4, y: 2}
+  portalRegion: []
   nutrientCoordinates:
   - {x: 0, y: 0}
-  - {x: 4, y: 4}
+  - {x: 3, y: 3}
   explosionCoordinates: []

@@ -11,6 +11,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private ExplosionBuff _explosionPrefab;
     
     [SerializeField] private Transform _cam;
+    [SerializeField] private Transform _Background;
     public int NutrientCount { get; private set; }
     public int ExplosionBuffCount { get; private set; }
     public int width { get; private set; }
@@ -83,6 +84,10 @@ public class GridManager : MonoBehaviour
         if (_cam != null)
         {
             _cam.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10f);
+        }
+        if (_Background != null)
+        {
+            _Background.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10f);
         }
 
         LoadLevelLayout();
