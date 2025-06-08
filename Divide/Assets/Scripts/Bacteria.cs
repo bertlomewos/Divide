@@ -5,14 +5,21 @@ public class Bacteria : MonoBehaviour
 {
     public Tile currentTile;
     private Vector3 originalScale;
+    private int generation = 0;
+    private const float scaleReductionPerGen = 0.85f; // Scale factor per generation
 
     void Awake()
     {
         originalScale = transform.localScale;
     }
 
-    // THIS IS THE NEW METHOD FOR THE PARENT
-    // It will make the parent shrink and then regrow.
+    public void SetGeneration(int gen)
+    {
+        generation = gen;
+        float scaleFactor = Mathf.Pow(scaleReductionPerGen, generation);
+        transform.localScale = originalScale * scaleFactor;
+    }
+
     public void PerformDivisionShrink()
     {
         StartCoroutine(ShrinkAndRegrowAnimation());
@@ -20,39 +27,41 @@ public class Bacteria : MonoBehaviour
 
     IEnumerator ShrinkAndRegrowAnimation()
     {
-        Vector3 shrunkenScale = originalScale * 0.75f; // How small it gets
-        float duration = 0.2f; // How fast it shrinks
+        Vector3 currentScale = transform.localScale;
+        Vector3 shrunkenScale = currentScale * 0.75f;
+        float duration = 0.2f;
         float timer = 0f;
 
-        // Shrink down
+        // Shrink
         while (timer < duration)
         {
-            transform.localScale = Vector3.Lerp(originalScale, shrunkenScale, timer / duration);
+            transform.localScale = Vector3.Lerp(currentScale, shrunkenScale, timer / duration);
             timer += Time.deltaTime;
             yield return null;
         }
         transform.localScale = shrunkenScale;
 
-        // Reset timer to grow back
+        // Grow back
         timer = 0f;
-
-        // Grow back to original size
         while (timer < duration)
         {
-            transform.localScale = Vector3.Lerp(shrunkenScale, originalScale, timer / duration);
+            transform.localScale = Vector3.Lerp(shrunkenScale, currentScale, timer / duration);
             timer += Time.deltaTime;
             yield return null;
         }
-
-        // Ensure it's back to the original scale
-        transform.localScale = originalScale;
+        transform.localScale = currentScale;
     }
 
-
-    // This method for the NEW bacterium is still correct. No changes needed here.
     public void MoveToTile(Tile targetTile, Bacteria parent = null)
     {
         currentTile = targetTile;
+
+        if (parent != null)
+        {
+            generation = parent.generation + 1;
+        }
+        SetGeneration(generation);
+
         StartCoroutine(DivideAndGrowAnimation(targetTile.transform.position, parent));
     }
 
@@ -60,18 +69,19 @@ public class Bacteria : MonoBehaviour
     {
         float duration = 0.4f;
         float timer = 0f;
-        Vector3 startPosition = (parent != null) ? parent.transform.position : targetPosition;
+        Vector3 startPosition = parent != null ? parent.transform.position : targetPosition;
         transform.position = startPosition;
+        Vector3 targetScale = transform.localScale;
         transform.localScale = Vector3.zero;
 
         while (timer < duration)
         {
             transform.position = Vector3.Lerp(startPosition, targetPosition, timer / duration);
-            transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, timer / duration);
+            transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, timer / duration);
             timer += Time.deltaTime;
             yield return null;
         }
         transform.position = targetPosition;
-        transform.localScale = originalScale;
+        transform.localScale = targetScale;
     }
 }

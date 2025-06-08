@@ -148,7 +148,6 @@ public class GameManager : MonoBehaviour
         return bounds.center;
     }
     */
-
     private void SpawnBacteria(Tile tile, Bacteria parentBacteria = null)
     {
         if (_currentBacteriaCount >= _petriDishCapacity)
@@ -165,8 +164,8 @@ public class GameManager : MonoBehaviour
 
         Vector3 spawnPosition = (parentBacteria != null) ? parentBacteria.transform.position : tile.transform.position;
         var newBacteria = Instantiate(_bacteriaPrefab, spawnPosition, Quaternion.identity);
-        
-        newBacteria.MoveToTile(tile, parentBacteria);
+
+        newBacteria.MoveToTile(tile, parentBacteria); 
         tile.SetOccupied(true);
         _bacteriaColony.Add(newBacteria);
         _currentBacteriaCount++;
@@ -176,6 +175,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Bacteria count: {_currentBacteriaCount}/{_petriDishCapacity}");
     }
+
 
     public void OnTileClicked(Tile clickedTile)
     {
