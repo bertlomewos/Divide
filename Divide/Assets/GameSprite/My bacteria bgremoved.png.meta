@@ -1,0 +1,1053 @@
+fileFormatVersion: 2
+guid: 2a82b7eae63c31f449f8febe764ff657
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4569785766903305284
+    second: My bacteria bgremoved_0
+  - first:
+      213: -679487812038879966
+    second: My bacteria bgremoved_1
+  - first:
+      213: 4628375688150338412
+    second: My bacteria bgremoved_2
+  - first:
+      213: -6181405650284574506
+    second: My bacteria bgremoved_3
+  - first:
+      213: 5928640864842913369
+    second: My bacteria bgremoved_4
+  - first:
+      213: 6949496726506794401
+    second: My bacteria bgremoved_5
+  - first:
+      213: 6501076696048059891
+    second: My bacteria bgremoved_6
+  - first:
+      213: -4091655426488848334
+    second: My bacteria bgremoved_7
+  - first:
+      213: 1217471491938327172
+    second: My bacteria bgremoved_8
+  - first:
+      213: 8037561587280420094
+    second: My bacteria bgremoved_9
+  - first:
+      213: -3201332632902854380
+    second: My bacteria bgremoved_10
+  - first:
+      213: 4425414602706461795
+    second: My bacteria bgremoved_11
+  - first:
+      213: 4853366737079026728
+    second: My bacteria bgremoved_12
+  - first:
+      213: 2432457041116246322
+    second: My bacteria bgremoved_13
+  - first:
+      213: -2019137259967145388
+    second: My bacteria bgremoved_14
+  - first:
+      213: 2811376529677832338
+    second: My bacteria bgremoved_15
+  - first:
+      213: -8288838554431042134
+    second: My bacteria bgremoved_16
+  - first:
+      213: -236412132922778084
+    second: My bacteria bgremoved_17
+  - first:
+      213: -1513246399909105892
+    second: My bacteria bgremoved_18
+  - first:
+      213: -5325424459848885551
+    second: My bacteria bgremoved_19
+  - first:
+      213: -1125312990767279955
+    second: My bacteria bgremoved_20
+  - first:
+      213: 4897376171103296227
+    second: My bacteria bgremoved_21
+  - first:
+      213: 5328516914550260722
+    second: My bacteria bgremoved_22
+  - first:
+      213: -4349911709836252506
+    second: My bacteria bgremoved_23
+  - first:
+      213: -7972304651207657383
+    second: My bacteria bgremoved_24
+  - first:
+      213: 2634566499038441270
+    second: My bacteria bgremoved_25
+  - first:
+      213: -4704925140776381613
+    second: My bacteria bgremoved_26
+  - first:
+      213: 9019831021562232588
+    second: My bacteria bgremoved_27
+  - first:
+      213: -8295825040084598040
+    second: My bacteria bgremoved_28
+  - first:
+      213: 7092902265604410417
+    second: My bacteria bgremoved_29
+  - first:
+      213: 7913369492819785620
+    second: My bacteria bgremoved_30
+  - first:
+      213: -6408040474715759813
+    second: My bacteria bgremoved_31
+  - first:
+      213: -2712681099035981347
+    second: My bacteria bgremoved_32
+  - first:
+      213: 2830548459910393017
+    second: My bacteria bgremoved_33
+  - first:
+      213: -2263518018713758152
+    second: My bacteria bgremoved_34
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 200
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: My bacteria bgremoved_0
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 632
+        width: 190
+        height: 388
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbba7188e0cd490c0800000000000000
+      internalID: -4569785766903305284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_1
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 743
+        width: 184
+        height: 248
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 225173e5f69f196f0800000000000000
+      internalID: -679487812038879966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_2
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 601
+        width: 280
+        height: 423
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6b414b8a2b4b3040800000000000000
+      internalID: 4628375688150338412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_3
+      rect:
+        serializedVersion: 2
+        x: 782
+        y: 633
+        width: 265
+        height: 391
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d80232cf4c373aa0800000000000000
+      internalID: -6181405650284574506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_4
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 803
+        width: 78
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95693dd8473c64250800000000000000
+      internalID: 5928640864842913369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_5
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 866
+        width: 147
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ad6d27e372917060800000000000000
+      internalID: 6949496726506794401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_6
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 809
+        width: 79
+        height: 89
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f5c3859fc6783a50800000000000000
+      internalID: 6501076696048059891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_7
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 810
+        width: 116
+        height: 185
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23035d071158737c0800000000000000
+      internalID: -4091655426488848334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_8
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 632
+        width: 150
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48a16291fd355e010800000000000000
+      internalID: 1217471491938327172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_9
+      rect:
+        serializedVersion: 2
+        x: 990
+        y: 469
+        width: 386
+        height: 329
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efc9c26cda72b8f60800000000000000
+      internalID: 8037561587280420094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_10
+      rect:
+        serializedVersion: 2
+        x: 1111
+        y: 791
+        width: 53
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41995f78ee49293d0800000000000000
+      internalID: -3201332632902854380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_11
+      rect:
+        serializedVersion: 2
+        x: 1162
+        y: 773
+        width: 70
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3642522622b3a6d30800000000000000
+      internalID: 4425414602706461795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_12
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 296
+        width: 171
+        height: 390
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 824ca48455f9a5340800000000000000
+      internalID: 4853366737079026728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_13
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 495
+        width: 238
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 231b12b8ac2d1c120800000000000000
+      internalID: 2432457041116246322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_14
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 357
+        width: 190
+        height: 236
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45a17e22c559af3e0800000000000000
+      internalID: -2019137259967145388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_15
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 381
+        width: 141
+        height: 263
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 15}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2905155fe04040720800000000000000
+      internalID: 2811376529677832338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_16
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 441
+        width: 148
+        height: 184
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aad439a304128fc80800000000000000
+      internalID: -8288838554431042134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_17
+      rect:
+        serializedVersion: 2
+        x: 966
+        y: 548
+        width: 35
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1e9b8cea6818bcf0800000000000000
+      internalID: -236412132922778084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_18
+      rect:
+        serializedVersion: 2
+        x: 1063
+        y: 397
+        width: 351
+        height: 273
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1f67c3ba6edffae0800000000000000
+      internalID: -1513246399909105892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_19
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 513
+        width: 24
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dad7884baa4816b0800000000000000
+      internalID: -5325424459848885551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_20
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 234
+        width: 138
+        height: 270
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da01f2c0cc51260f0800000000000000
+      internalID: -1125312990767279955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_21
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 262
+        width: 144
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ea13122ea9f6f340800000000000000
+      internalID: 4897376171103296227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_22
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 9
+        width: 199
+        height: 328
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f3cd6fe6e1b2f940800000000000000
+      internalID: 5328516914550260722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_23
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 53
+        width: 135
+        height: 300
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6aae5e2c85202a3c0800000000000000
+      internalID: -4349911709836252506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_24
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 22
+        width: 292
+        height: 282
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 958b297a82fac5190800000000000000
+      internalID: -7972304651207657383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_25
+      rect:
+        serializedVersion: 2
+        x: 849
+        y: 227
+        width: 343
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63fa458b54cdf8420800000000000000
+      internalID: 2634566499038441270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_26
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 305
+        width: 178
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3531831238fb4beb0800000000000000
+      internalID: -4704925140776381613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_27
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 66
+        width: 180
+        height: 219
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0ff3466680ec2d70800000000000000
+      internalID: 9019831021562232588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_28
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 123
+        width: 44
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e287f6441f4fdc80800000000000000
+      internalID: -8295825040084598040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_29
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 187
+        width: 66
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13c0aefd70d0f6260800000000000000
+      internalID: 7092902265604410417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_30
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 111
+        width: 91
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 497bfeb70afe1dd60800000000000000
+      internalID: 7913369492819785620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_31
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 191
+        width: 88
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3bdd36b3211217a0800000000000000
+      internalID: -6408040474715759813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_32
+      rect:
+        serializedVersion: 2
+        x: 1089
+        y: 1
+        width: 315
+        height: 288
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd94b0fa9ee9a5ad0800000000000000
+      internalID: -2712681099035981347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_33
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 152
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bcec70d3d0284720800000000000000
+      internalID: 2830548459910393017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: My bacteria bgremoved_34
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 79
+        width: 95
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 836ded7ca5e5690e0800000000000000
+      internalID: -2263518018713758152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: eb1c8d8778abf7548842fc8e03a93398
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      My bacteria bgremoved_0: -4569785766903305284
+      My bacteria bgremoved_1: -679487812038879966
+      My bacteria bgremoved_10: -3201332632902854380
+      My bacteria bgremoved_11: 4425414602706461795
+      My bacteria bgremoved_12: 4853366737079026728
+      My bacteria bgremoved_13: 2432457041116246322
+      My bacteria bgremoved_14: -2019137259967145388
+      My bacteria bgremoved_15: 2811376529677832338
+      My bacteria bgremoved_16: -8288838554431042134
+      My bacteria bgremoved_17: -236412132922778084
+      My bacteria bgremoved_18: -1513246399909105892
+      My bacteria bgremoved_19: -5325424459848885551
+      My bacteria bgremoved_2: 4628375688150338412
+      My bacteria bgremoved_20: -1125312990767279955
+      My bacteria bgremoved_21: 4897376171103296227
+      My bacteria bgremoved_22: 5328516914550260722
+      My bacteria bgremoved_23: -4349911709836252506
+      My bacteria bgremoved_24: -7972304651207657383
+      My bacteria bgremoved_25: 2634566499038441270
+      My bacteria bgremoved_26: -4704925140776381613
+      My bacteria bgremoved_27: 9019831021562232588
+      My bacteria bgremoved_28: -8295825040084598040
+      My bacteria bgremoved_29: 7092902265604410417
+      My bacteria bgremoved_3: -6181405650284574506
+      My bacteria bgremoved_30: 7913369492819785620
+      My bacteria bgremoved_31: -6408040474715759813
+      My bacteria bgremoved_32: -2712681099035981347
+      My bacteria bgremoved_33: 2830548459910393017
+      My bacteria bgremoved_34: -2263518018713758152
+      My bacteria bgremoved_4: 5928640864842913369
+      My bacteria bgremoved_5: 6949496726506794401
+      My bacteria bgremoved_6: 6501076696048059891
+      My bacteria bgremoved_7: -4091655426488848334
+      My bacteria bgremoved_8: 1217471491938327172
+      My bacteria bgremoved_9: 8037561587280420094
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
