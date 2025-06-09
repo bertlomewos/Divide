@@ -12,15 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9852827fc5f46f43b4ef7dc0b955862, type: 3}
   m_Name: Level 1
   m_EditorClassIdentifier: 
-  width: 3
-  height: 3
-  SpawnX: 1
-  SpawnY: 1
-  Capacity: 6
-  wallRegions: []
+  width: 10
+  height: 9
+  SpawnX: 2
+  SpawnY: 0
+  Capacity: 10
+  wallRegions:
+  - startCoordinate: {x: 1, y: 1}
+    endCoordinate: {x: 1, y: 3}
+  - startCoordinate: {x: 4, y: 4}
+    endCoordinate: {x: 1, y: 5}
   portalRegion: []
   nutrientCoordinates:
-  - {x: 2, y: 2}
-  - {x: 0, y: 2}
-  - {x: 2, y: 0}
-  explosionCoordinates: []
+  - {x: 0, y: 5}
+  - {x: 3, y: 2}
+  - {x: 5, y: 0}
+  explosionCoordinates:
+  - {x: 3, y: 6}
+  - {x: 4, y: 1}

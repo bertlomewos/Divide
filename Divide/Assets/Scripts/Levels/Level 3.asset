@@ -10,28 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9852827fc5f46f43b4ef7dc0b955862, type: 3}
-  m_Name: Level3
+  m_Name: Level 3
   m_EditorClassIdentifier: 
-  width: 6
-  height: 6
-  SpawnX: 3
-  SpawnY: 2
-  Capacity: 20
+  width: 10
+  height: 9
+  SpawnX: 2
+  SpawnY: 0
+  Capacity: 10
   wallRegions:
   - startCoordinate: {x: 1, y: 1}
-    endCoordinate: {x: 1, y: 4}
-  - startCoordinate: {x: 1, y: 1}
-    endCoordinate: {x: 4, y: 1}
-  - startCoordinate: {x: 4, y: 1}
-    endCoordinate: {x: 4, y: 3}
-  - startCoordinate: {x: 3, y: 3}
-    endCoordinate: {x: 3, y: 3}
-  - startCoordinate: {x: 3, y: 4}
-    endCoordinate: {x: 4, y: 4}
+    endCoordinate: {x: 1, y: 3}
+  - startCoordinate: {x: 4, y: 4}
+    endCoordinate: {x: 1, y: 5}
   portalRegion: []
   nutrientCoordinates:
-  - {x: 0, y: 0}
-  - {x: 5, y: 5}
   - {x: 0, y: 5}
+  - {x: 3, y: 2}
   - {x: 5, y: 0}
-  explosionCoordinates: []
+  explosionCoordinates:
+  - {x: 3, y: 6}
+  - {x: 4, y: 1}

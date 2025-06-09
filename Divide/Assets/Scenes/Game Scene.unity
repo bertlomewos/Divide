@@ -1252,16 +1252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bacteriaPrefab: {fileID: 8827521568935551464, guid: a04f558351be1f44fb765ec7db672c26, type: 3}
   levelProgression:
-  - {fileID: 11400000, guid: b59b281239ce01044b7fdfdf233932fc, type: 2}
-  - {fileID: 11400000, guid: ad737dc6c9063024082df48e65dda1a7, type: 2}
-  - {fileID: 11400000, guid: a93d0bf29c421a4438f2c23b4978c0bd, type: 2}
-  - {fileID: 11400000, guid: fc662eafa298ca14eb5be0de04159b6c, type: 2}
-  - {fileID: 11400000, guid: 842aba30d8ccffc4b94169a0310b2a10, type: 2}
-  - {fileID: 11400000, guid: a1432844cecc5d94d918ce5cbbdd7431, type: 2}
-  - {fileID: 11400000, guid: a450a70494297284c8467d214df808a6, type: 2}
-  - {fileID: 11400000, guid: 4d23922e0bdae844190c3d5013aa3775, type: 2}
-  - {fileID: 11400000, guid: fdf365617518d6446aab080604401b48, type: 2}
-  - {fileID: 11400000, guid: 982dc99501c7eb54fb5933ffc3069679, type: 2}
+  - {fileID: 11400000, guid: f7d9d8bf8f22e2949a83ed1d9f86bc2d, type: 2}
   delayBeforeNextLevel: 0.5
   _bacteriaColony: []
   _youLose: {fileID: 1471600827}
