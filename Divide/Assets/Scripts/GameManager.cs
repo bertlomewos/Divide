@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
     }
     */
 
-    private void SpawnBacteria(Tile tile)
+    private void SpawnBacteria(Tile tile, Bacteria parentBacteria = null)
     {
         if (_currentBacteriaCount >= _petriDishCapacity)
         {
@@ -161,9 +161,37 @@ public class GameManager : MonoBehaviour
             _youLose.gameObject.SetActive(true);
             return;
         }
+        if (parentBacteria != null)
+        {
+            try
+            {
+                parentBacteria.PerformDivisionShrink();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Exception in PerformDivisionShrink: {ex.Message}\n{ex.StackTrace}");
+                return;
+            }
+        }
 
-        var newBacteria = Instantiate(_bacteriaPrefab, tile.transform.position, Quaternion.identity);
-        newBacteria.MoveToTile(tile);
+        Vector3 spawnPosition = (parentBacteria != null) ? parentBacteria.transform.position : tile.transform.position;
+        var newBacteria = Instantiate(_bacteriaPrefab, spawnPosition, Quaternion.identity);
+        if (newBacteria == null)
+        {
+            Debug.LogError($"Failed to instantiate bacteria at ({tile.x}, {tile.y})!");
+            return;
+        }
+        try
+        {
+            newBacteria.MoveToTile(tile, parentBacteria);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Exception in MoveToTile: {ex.Message}\n{ex.StackTrace}");
+            Destroy(newBacteria.gameObject);
+            return;
+        }
+
         tile.SetOccupied(true);
         _bacteriaColony.Add(newBacteria);
         _currentBacteriaCount++;
@@ -192,7 +220,7 @@ public class GameManager : MonoBehaviour
         {
             if (IsAdjacent(clickedTile, bacteria.currentTile))
             {
-                SpawnBacteria(clickedTile);
+                SpawnBacteria(clickedTile, bacteria);
                 return;
             }
 
@@ -210,8 +238,8 @@ public class GameManager : MonoBehaviour
                     Vector2 ExitPos = region.ExitPortal;
                     Tile EnterTile = GridManager.instance.GetTileAtPosition(EnterPos);
                     Tile ExitTile = GridManager.instance.GetTileAtPosition(ExitPos);
-                    SpawnBacteria(EnterTile);
-                    SpawnBacteria(ExitTile);
+                    SpawnBacteria(EnterTile, bacteria);
+                    SpawnBacteria(ExitTile, bacteria);
                 }
             }
             else
