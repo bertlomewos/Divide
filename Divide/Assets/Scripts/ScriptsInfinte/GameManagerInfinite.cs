@@ -171,7 +171,7 @@ public class GameManagerInfinite : MonoBehaviour
         {
             tile.ClearNutrient();
             _nutrientsCollected++;
-            NutritionText.text = $"Nutrients Collected: {_nutrientsCollected}/{_totalNutrients}";
+            NutritionText.text = $"Nutrients : {_nutrientsCollected}/{_totalNutrients}";
             Debug.Log($"Nutrient collected! Total: {_nutrientsCollected}/{_totalNutrients}");
 
             if (_nutrientsCollected >= _totalNutrients)

@@ -10,42 +10,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9852827fc5f46f43b4ef7dc0b955862, type: 3}
-  m_Name: level4
+  m_Name: Level10
   m_EditorClassIdentifier: 
   width: 10
   height: 9
   SpawnX: 0
-  SpawnY: 8
+  SpawnY: 1
   Capacity: 31
   wallRegions:
-  - startCoordinate: {x: 0, y: 0}
-    endCoordinate: {x: 0, y: 7}
-  - startCoordinate: {x: 0, y: 0}
-    endCoordinate: {x: 7, y: 0}
-  - startCoordinate: {x: 9, y: 0}
-    endCoordinate: {x: 9, y: 8}
+  - startCoordinate: {x: 3, y: 0}
+    endCoordinate: {x: 5, y: 0}
   - startCoordinate: {x: 3, y: 8}
     endCoordinate: {x: 8, y: 8}
   - startCoordinate: {x: 2, y: 1}
     endCoordinate: {x: 7, y: 1}
-  - startCoordinate: {x: 7, y: 2}
-    endCoordinate: {x: 7, y: 6}
+  - startCoordinate: {x: 7, y: 4}
+    endCoordinate: {x: 7, y: 5}
+  - startCoordinate: {x: 6, y: 3}
+    endCoordinate: {x: 6, y: 4}
+  - startCoordinate: {x: 9, y: 0}
+    endCoordinate: {x: 9, y: 4}
+  - startCoordinate: {x: 0, y: 2}
+    endCoordinate: {x: 0, y: 8}
   - startCoordinate: {x: 1, y: 6}
     endCoordinate: {x: 6, y: 6}
   - startCoordinate: {x: 1, y: 3}
     endCoordinate: {x: 1, y: 3}
+  - startCoordinate: {x: 6, y: 7}
+    endCoordinate: {x: 6, y: 7}
   - startCoordinate: {x: 3, y: 3}
     endCoordinate: {x: 3, y: 3}
-  - startCoordinate: {x: 8, y: 3}
-    endCoordinate: {x: 8, y: 4}
+  - startCoordinate: {x: 8, y: 1}
+    endCoordinate: {x: 8, y: 2}
   portalRegion:
-  - EnterPortal: {x: 2, y: 8}
-    ExitPortal: {x: 1, y: 5}
+  - EnterPortal: {x: 2, y: 0}
+    ExitPortal: {x: 2, y: 8}
   nutrientCoordinates:
-  - {x: 1, y: 1}
-  - {x: 8, y: 0}
-  - {x: 8, y: 7}
-  - {x: 4, y: 3}
+  - {x: 1, y: 4}
+  - {x: 6, y: 0}
+  - {x: 9, y: 5}
+  - {x: 1, y: 7}
+  - {x: 6, y: 5}
+  - {x: 9, y: 8}
+  - {x: 5, y: 2}
   explosionCoordinates:
-  - {x: 6, y: 4}
-  - {x: 6, y: 2}
+  - {x: 4, y: 7}
+  - {x: 4, y: 2}
+  - {x: 7, y: 3}

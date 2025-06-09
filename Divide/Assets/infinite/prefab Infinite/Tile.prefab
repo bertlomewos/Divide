@@ -153,7 +153,7 @@ MonoBehaviour:
   _baseColor: {fileID: 7223950226953391895, guid: a36d99d762e27fa41981897e63db4f8b, type: 3}
   _offsetColor: {fileID: 7223950226953391895, guid: a36d99d762e27fa41981897e63db4f8b, type: 3}
   _wallColor: {fileID: -3218248262026354849, guid: 3f1bfcf292d799f4bb5ab4a0ce9e9327, type: 3}
-  _PortalColor: {fileID: -388999789685119266, guid: 94711492770ce6c4e908e91090818cb7, type: 3}
+  _PortalColor: {fileID: -5248312560366519365, guid: bcb6b424bf8aa1f45993816d16fe7d2c, type: 3}
   _renderer: {fileID: 2257556721308175723}
   _highlight: {fileID: 6635541321866339634}
   isWalkable: 1

@@ -14,18 +14,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Bacteria _bacteriaPrefab;
 
     [Header("Level Progression")]
-    [SerializeField] private List<LevelData> levelProgression; 
+    [SerializeField] private List<LevelData> levelProgression;
     [SerializeField] private float delayBeforeNextLevel = 2f;
     private int currentLevelIndex = 0;
-        
-    // [Header("Camera Control")]
-    // [SerializeField] private Camera _mainCamera;
-    // [SerializeField] private float _cameraSmoothSpeed = 0.125f;
 
     private int _petriDishCapacity;
     private int _totalNutrients;
     private int _currentBacteriaCount = 0;
-    [SerializeField]  private List<Bacteria> _bacteriaColony = new List<Bacteria>();
+    [SerializeField] private List<Bacteria> _bacteriaColony = new List<Bacteria>();
     private int _nutrientsCollected = 0;
     private bool isExplosionBuffActive = false;
 
@@ -47,17 +43,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        // if (_mainCamera == null)
-        // {
-        //     _mainCamera = Camera.main;
-        // }
     }
 
     void Start()
     {
         if (levelProgression.Count > 0)
         {
+            currentLevelIndex = PlayerPrefs.GetInt("LastLevelIndex", 0);
             StartLevel(currentLevelIndex);
         }
         else
@@ -72,25 +64,16 @@ public class GameManager : MonoBehaviour
         {
             LoadScene(1);
         }
-        LevelText.text = $"Level {currentLevelIndex + 1}";
+        if (LevelText != null)
+        {
+            LevelText.text = $"Level {currentLevelIndex + 1}";
+        }
     }
-
-    /*
-    private void LateUpdate()
-    {
-        if (_bacteriaColony.Count == 0) return;
-
-        Vector3 centerPoint = GetCenterPoint();
-        Vector3 cameraDestination = new Vector3(centerPoint.x, centerPoint.y, _mainCamera.transform.position.z);
-        
-        _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position, cameraDestination, _cameraSmoothSpeed);
-    }
-    */
 
     public void StartLevel(int levelIndex)
     {
         GridManager.instance.BuildLevel(levelProgression[levelIndex]);
-        
+
         _totalNutrients = GridManager.instance.NutrientCount;
         _petriDishCapacity = GridManager.instance.petriDishCap;
         _nutrientsCollected = 0;
@@ -112,6 +95,9 @@ public class GameManager : MonoBehaviour
     void LoadNextLevel()
     {
         currentLevelIndex++;
+        PlayerPrefs.SetInt("LastLevelIndex", currentLevelIndex);
+        PlayerPrefs.Save();
+
         if (currentLevelIndex < levelProgression.Count)
         {
             Debug.Log($"LEVEL COMPLETE! Loading Level {currentLevelIndex + 1}...");
@@ -122,7 +108,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("CONGRATULATIONS! You have completed all levels!");
             _youWin.gameObject.SetActive(true);
         }
-    }                
+    }
 
     IEnumerator LoadLevelRoutine()
     {
@@ -137,23 +123,6 @@ public class GameManager : MonoBehaviour
         StartLevel(currentLevelIndex);
     }
 
-    /*
-    private Vector3 GetCenterPoint()
-    {
-        if (_bacteriaColony.Count == 1)
-        {
-            return _bacteriaColony[0].transform.position;
-        }
-
-        var bounds = new Bounds(_bacteriaColony[0].transform.position, Vector3.zero);
-        for (int i = 0; i < _bacteriaColony.Count; i++)
-        {
-            bounds.Encapsulate(_bacteriaColony[i].transform.position);
-        }
-        return bounds.center;
-    }
-    */
-
     private void SpawnBacteria(Tile tile, Bacteria parentBacteria = null)
     {
         if (_currentBacteriaCount >= _petriDishCapacity)
@@ -162,6 +131,7 @@ public class GameManager : MonoBehaviour
             _youLose.gameObject.SetActive(true);
             return;
         }
+
         if (parentBacteria != null)
         {
             try
@@ -182,6 +152,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError($"Failed to instantiate bacteria at ({tile.x}, {tile.y})!");
             return;
         }
+
         try
         {
             newBacteria.MoveToTile(tile, parentBacteria);
@@ -199,7 +170,7 @@ public class GameManager : MonoBehaviour
 
         CheckForNutrient(tile);
         CheckForExplosion(tile);
-        CapacityText.text = $"Bacteria: {_currentBacteriaCount}/{_petriDishCapacity}";  
+        CapacityText.text = $"Bacteria: {_currentBacteriaCount}/{_petriDishCapacity}";
         NutritionText.text = $"Nutrients: {_nutrientsCollected}/{_totalNutrients}";
         Debug.Log($"Bacteria count: {_currentBacteriaCount}/{_petriDishCapacity}");
     }
@@ -224,9 +195,9 @@ public class GameManager : MonoBehaviour
                 SpawnBacteria(clickedTile, bacteria);
                 return;
             }
-
         }
     }
+
     public void OnPortalTileClicked(Tile clickedTile)
     {
         foreach (var bacteria in _bacteriaColony.ToList())
@@ -248,9 +219,8 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"No adjacent bacteria found for portal tile at {clickedTile.x}, {clickedTile.y}");
             }
         }
-
-
     }
+
     private void CheckForNutrient(Tile tile)
     {
         if (tile.OccupyingNutrient != null)
@@ -286,8 +256,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
     private bool IsAdjacent(Tile tile1, Tile tile2)
     {
         return (Mathf.Abs(tile1.x - tile2.x) + Mathf.Abs(tile1.y - tile2.y)) == 1;
@@ -298,5 +266,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(Index);
     }
 
-
+    // Optional: call this to reset saved progress
+    public void ResetProgress()
+    {
+        PlayerPrefs.DeleteKey("LastLevelIndex");
+    }
 }
