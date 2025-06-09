@@ -6,7 +6,7 @@ public class BacteriaInfinite : MonoBehaviour
     public TileInfinite currentTile;
     private Vector3 originalScale;
     private int generation = 0;
-    private const float scaleReductionPerGen = 0.85f; // Scale factor per generation
+    private const float scaleReductionPerGen = 0.95f; // Scale factor per generation
 
     void Awake()
     {
