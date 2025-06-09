@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class GameManager : MonoBehaviour
     public GameObject _youLose;
     public GameObject _youWin;
 
+    public TextMeshProUGUI CapacityText;
+    public TextMeshProUGUI NutritionText;
+
+
     private void Awake()
     {
         if (instance == null)
@@ -57,7 +62,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No levels assigned to the Level Progression list in GameManager!");
+            Debug.Log("No levels assigned to the Level Progression list in GameManager!");
         }
     }
 
@@ -65,7 +70,6 @@ public class GameManager : MonoBehaviour
     {
         if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
         {
-            
             LoadScene(0);
         }
     }
@@ -82,7 +86,7 @@ public class GameManager : MonoBehaviour
     }
     */
 
-    void StartLevel(int levelIndex)
+    public void StartLevel(int levelIndex)
     {
         GridManager.instance.BuildLevel(levelProgression[levelIndex]);
 
@@ -166,7 +170,8 @@ public class GameManager : MonoBehaviour
 
         CheckForNutrient(tile);
         CheckForExplosion(tile);
-
+        CapacityText.text = $"Bacteria: {_currentBacteriaCount}/{_petriDishCapacity}";  
+        NutritionText.text = $"Nutrients: {_nutrientsCollected}/{_totalNutrients}";
         Debug.Log($"Bacteria count: {_currentBacteriaCount}/{_petriDishCapacity}");
     }
 
@@ -223,6 +228,7 @@ public class GameManager : MonoBehaviour
         {
             tile.ClearNutrient();
             _nutrientsCollected++;
+            NutritionText.text = $"Nutrients: {_nutrientsCollected}/{_totalNutrients}";
             Debug.Log($"Nutrient collected! Total: {_nutrientsCollected}/{_totalNutrients}");
 
             if (_nutrientsCollected >= _totalNutrients)
@@ -262,4 +268,6 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(Index);
     }
+
+
 }

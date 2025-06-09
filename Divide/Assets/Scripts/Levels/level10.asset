@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9852827fc5f46f43b4ef7dc0b955862, type: 3}
+  m_Name: level10
+  m_EditorClassIdentifier: 
+  width: 5
+  height: 5
+  SpawnX: 3
+  SpawnY: 3
+  Capacity: 100
+  wallRegions:
+  - startCoordinate: {x: 0, y: 1}
+    endCoordinate: {x: 1, y: 2}
+  portalRegion:
+  - EnterPortal: {x: 1, y: 3}
+    ExitPortal: {x: 1, y: 4}
+  nutrientCoordinates:
+  - {x: 0, y: 0}
+  explosionCoordinates:
+  - {x: 4, y: 4}
