@@ -266,9 +266,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(Index);
     }
 
-    // Optional: call this to reset saved progress
     public void ResetProgress()
     {
         PlayerPrefs.DeleteKey("LastLevelIndex");
+    }
+    public void GoFullscreen()
+    {
+        Screen.fullScreen = true;
     }
 }
