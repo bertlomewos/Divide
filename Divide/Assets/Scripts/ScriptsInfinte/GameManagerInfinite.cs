@@ -172,6 +172,7 @@ public class GameManagerInfinite : MonoBehaviour
             NutritionText.text = $"Nutrients Collected: {_nutrientsCollected}/{_totalNutrients}";
             Debug.Log($"Nutrient collected! Total: {_nutrientsCollected}/{_totalNutrients}");
 
+            AudioManager.Instance.PlayNutrientCollectSound();
             if (_nutrientsCollected >= _totalNutrients)
             {
                 _youWin.SetActive(true);
@@ -221,6 +222,8 @@ public class GameManagerInfinite : MonoBehaviour
                 return;
             }
         }
+        AudioManagerInfinite.Instance.PlayMoveSound();
+
         Vector3 spawnPosition = (parentBacteria != null) ? parentBacteria.transform.position : tile.transform.position;
         var newBacteria = Instantiate(_bacteriaPrefab, spawnPosition, Quaternion.identity);
         if (newBacteria == null)
@@ -276,6 +279,8 @@ public class GameManagerInfinite : MonoBehaviour
         BacteriaInfinite adjacentBacteria = _bacteriaColony.FirstOrDefault(b => IsAdjacent(clickedPortalTile, b.currentTile));
         if (adjacentBacteria != null)
         {
+            AudioManager.Instance.PlayTeleportSound();
+
             Vector2 enterPos = new Vector2(clickedPortalTile.x, clickedPortalTile.y);
             Vector2 exitPos = Vector2.zero;
             bool foundPortal = false;
@@ -325,7 +330,14 @@ public class GameManagerInfinite : MonoBehaviour
         foreach (TileInfinite neighbor in neighbors)
         {
             neighbor.ClearWall();
+            Delay(5.0f);
         }
+        AudioManager.Instance.PlayBombBuffCollectSound();
+    }
+
+    IEnumerator Delay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
     }
 
     private bool IsAdjacent(TileInfinite tile1, TileInfinite tile2)

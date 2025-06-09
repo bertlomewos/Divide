@@ -174,6 +174,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        AudioManagerInfinite.Instance.PlayMoveSound();
+
         Vector3 spawnPosition = (parentBacteria != null) ? parentBacteria.transform.position : tile.transform.position;
         var newBacteria = Instantiate(_bacteriaPrefab, spawnPosition, Quaternion.identity);
         if (newBacteria == null)
@@ -232,6 +234,8 @@ public class GameManager : MonoBehaviour
         {
             if (IsAdjacent(clickedTile, bacteria.currentTile))
             {
+                AudioManagerInfinite.Instance.PlayTeleportSound();
+
                 foreach (var region in GridManager.instance.currentLevelData.portalRegion)
                 {
                     Vector2 EnterPos = region.EnterPortal;
@@ -259,6 +263,8 @@ public class GameManager : MonoBehaviour
             NutritionText.text = $"Nutrients: {_nutrientsCollected}/{_totalNutrients}";
             Debug.Log($"Nutrient collected! Total: {_nutrientsCollected}/{_totalNutrients}");
 
+            AudioManagerInfinite.Instance.PlayNutrientCollectSound();
+
             if (_nutrientsCollected >= _totalNutrients)
             {
                 LoadNextLevel();
@@ -270,6 +276,7 @@ public class GameManager : MonoBehaviour
     {
         if (tile.OccupyingExplosion != null)
         {
+
             tile.ClearExplosion();
             isExplosionBuffActive = true;
             Debug.Log($"Explosion buff collected!");
@@ -281,8 +288,17 @@ public class GameManager : MonoBehaviour
         List<Tile> neighbors = GridManager.instance.GetNeighborTiles(centerTile, true);
         foreach (Tile neighbor in neighbors)
         {
+            
             neighbor.ClearWall();
+            Delay(5.0f);
         }
+        AudioManagerInfinite.Instance.PlayBombBuffCollectSound();
+
+
+    }
+    IEnumerator Delay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
     }
 
 
