@@ -36,6 +36,7 @@ public class GameManagerInfinite : MonoBehaviour
 
     public TextMeshProUGUI CapacityText;
     public TextMeshProUGUI NutritionText;
+    public TextMeshProUGUI LevelText;
     private void Awake()
     {
         if (instance == null)
@@ -89,7 +90,7 @@ public class GameManagerInfinite : MonoBehaviour
         int portals = (currentLevel >= 4 && currentLevel % 3 == 0) ? 1 : 0;
 
         Debug.Log($"Starting Level {currentLevel}: Leniency={leniency}, Width={width}, Height={height}, Nutrients={nutrients}, Explosions={explosions}, Portals={portals}");
-
+        LevelText.text = $"Level: {currentLevel}";
         LevelDataInfinite newLevelData = null;
         int attempts = 0;
         const int maxAttempts = 5;
@@ -144,6 +145,7 @@ public class GameManagerInfinite : MonoBehaviour
     void LoadNextLevel()
     {
         currentLevel++;
+
         Debug.Log($"LEVEL COMPLETE! Loading Level {currentLevel}...");
         StartCoroutine(LoadLevelRoutine());
     }

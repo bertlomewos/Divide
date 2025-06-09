@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<LevelData> levelProgression; 
     [SerializeField] private float delayBeforeNextLevel = 2f;
     private int currentLevelIndex = 0;
-
+        
     // [Header("Camera Control")]
     // [SerializeField] private Camera _mainCamera;
     // [SerializeField] private float _cameraSmoothSpeed = 0.125f;
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI CapacityText;
     public TextMeshProUGUI NutritionText;
-
+    public TextMeshProUGUI LevelText;
 
     private void Awake()
     {
@@ -70,8 +70,9 @@ public class GameManager : MonoBehaviour
     {
         if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
         {
-            LoadScene(0);
+            LoadScene(1);
         }
+        LevelText.text = $"Level {currentLevelIndex + 1}";
     }
 
     /*
@@ -89,7 +90,7 @@ public class GameManager : MonoBehaviour
     public void StartLevel(int levelIndex)
     {
         GridManager.instance.BuildLevel(levelProgression[levelIndex]);
-
+        
         _totalNutrients = GridManager.instance.NutrientCount;
         _petriDishCapacity = GridManager.instance.petriDishCap;
         _nutrientsCollected = 0;
